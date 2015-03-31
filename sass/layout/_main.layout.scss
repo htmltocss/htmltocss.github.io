@@ -1,0 +1,55 @@
+header {
+  @include pie-clearfix;
+
+  margin-bottom: 20px;
+  padding-bottom: 7px;
+  
+  border-bottom: 2px solid $darker_grey_color;
+}
+
+.l-buttons {
+  @include pie-clearfix;
+}
+
+.l-editors {
+  @include pie-clearfix;
+}
+
+.l-container {
+  width: 98%;
+  margin: 0 auto;
+  max-width: 1024px;
+}
+
+.html-wrapper {
+  float: left;
+  width: 48%; 
+}
+
+#html-editor {                                                    
+  height: 250px;
+  border: 1px solid #ccc;
+}
+
+.css-wrapper {              
+  float: left;
+  width: 48%;
+
+  margin-left: 4%;
+}
+
+#css-editor {                                                   
+  height: 250px;
+  border: 1px solid #ccc;
+}
+
+footer {
+  @include pie-clearfix;
+
+  margin-top: 70px;
+  padding-top: 7px;
+
+  border-top: 1px solid $darker_grey_color;
+
+  text-align: center;
+}

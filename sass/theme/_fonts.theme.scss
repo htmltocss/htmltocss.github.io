@@ -1,0 +1,55 @@
+
+@include font-face("Glyphicons Halflings", font-files("bootstrap/glyphicons-halflings-regular.woff", "bootstrap/glyphicons-halflings-regular.ttf", "bootstrap/glyphicons-halflings-regular.svg#glyphicons-halflings-regular"), "bootstrap/glyphicons-halflings-regular.eot?");
+@include font-face("Gotham-Bold", font-files("Gotham-Bold/Gotham-Bold.woff", "Gotham-Bold/Gotham-Bold.ttf", "Gotham-Bold/Gotham-Bold.svg#Gotham-Bold"), "Gotham-Bold/Gotham-Bold.eot?");
+@include font-face("Gotham-BoldItalic", font-files("Gotham-BoldItalic/Gotham-BoldItalic.woff", "Gotham-BoldItalic/Gotham-BoldItalic.ttf", "Gotham-BoldItalic/Gotham-BoldItalic.svg#Gotham-BoldItalic"), "Gotham-BoldItalic/Gotham-BoldItalic.eot?");
+@include font-face("Gotham-Book", font-files("Gotham-Book/Gotham-Book.woff", "Gotham-Book/Gotham-Book.ttf", "Gotham-Book/Gotham-Book.svg#Gotham-Book"), "Gotham-Book/Gotham-Book.eot?");
+@include font-face("Gotham-BookItalic", font-files("Gotham-BookItalic/Gotham-BookItalic.woff", "Gotham-BookItalic/Gotham-BookItalic.ttf", "Gotham-BookItalic/Gotham-BookItalic.svg#Gotham-BookItalic"), "Gotham-BookItalic/Gotham-BookItalic.eot?");
+@include font-face("Gotham-Light", font-files("Gotham-Light/Gotham-Light.woff", "Gotham-Light/Gotham-Light.ttf", "Gotham-Light/Gotham-Light.svg#Gotham-Light"), "Gotham-Light/Gotham-Light.eot?");
+@include font-face("Gotham-LightItalic", font-files("Gotham-LightItalic/Gotham-LightItalic.woff", "Gotham-LightItalic/Gotham-LightItalic.ttf", "Gotham-LightItalic/Gotham-LightItalic.svg#Gotham-LightItalic"), "Gotham-LightItalic/Gotham-LightItalic.eot?");
+@include font-face("Gotham-Medium", font-files("Gotham-Medium/Gotham-Medium.woff", "Gotham-Medium/Gotham-Medium.ttf", "Gotham-Medium/Gotham-Medium.svg#Gotham-Medium"), "Gotham-Medium/Gotham-Medium.eot?");
+@include font-face("Gotham-MediumItalic", font-files("Gotham-MediumItalic/Gotham-MediumItalic.woff", "Gotham-MediumItalic/Gotham-MediumItalic.ttf", "Gotham-MediumItalic/Gotham-MediumItalic.svg#Gotham-MediumItalic"), "Gotham-MediumItalic/Gotham-MediumItalic.eot?");
+
+
+/*
+@font-face {
+  font-family: "Glyphicons Halflings";
+  src: url('../fonts/bootstrap/glyphicons-halflings-regular.eot?');
+  src: url('../fonts/bootstrap/glyphicons-halflings-regular.eot??#iefix') format('embedded-opentype'), url('../fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons-halflings-regular') format('svg');
+}
+
+@font-face {
+  font-family: "HelveticaNeueLight";
+  src: url('../fonts/HelveticaNeueLight/HelveticaNeueLight.eot?');
+  src: url('../fonts/HelveticaNeueLight/HelveticaNeueLight.eot??#iefix') format('embedded-opentype'), url('../fonts/HelveticaNeueLight/HelveticaNeueLight.woff') format('woff'), url('../fonts/HelveticaNeueLight/HelveticaNeueLight.ttf') format('truetype'), url('../fonts/HelveticaNeueLight/HelveticaNeueLight.svg#HelveticaNeueLight') format('svg');
+}
+
+@font-face {
+  font-family: "Gotham-BoldItalic";
+  src: url('../fonts/Gotham-BoldItalic/Gotham-BoldItalic.eot?');
+  src: url('../fonts/Gotham-BoldItalic/Gotham-BoldItalic.eot??#iefix') format('embedded-opentype'), url('../fonts/Gotham-BoldItalic/Gotham-BoldItalic.woff') format('woff'), url('../fonts/Gotham-BoldItalic/Gotham-BoldItalic.ttf') format('truetype'), url('../fonts/Gotham-BoldItalic/Gotham-BoldItalic.svg#Gotham-BoldItalic') format('svg');
+}
+
+@font-face {
+  font-family: "Gotham-Book";
+  src: url('../fonts/Gotham-Book/Gotham-Book.eot?');
+  src: url('../fonts/Gotham-Book/Gotham-Book.eot??#iefix') format('embedded-opentype'), url('../fonts/Gotham-Book/Gotham-Book.woff') format('woff'), url('../fonts/Gotham-Book/Gotham-Book.ttf') format('truetype'), url('../fonts/Gotham-Book/Gotham-Book.svg#Gotham-Book') format('svg');
+}
+
+@font-face {
+  font-family: "Gotham-BookItalic";
+  src: url('../fonts/Gotham-BookItalic/Gotham-BookItalic.eot?');
+  src: url('../fonts/Gotham-BookItalic/Gotham-BookItalic.eot??#iefix') format('embedded-opentype'), url('../fonts/Gotham-BookItalic/Gotham-BookItalic.woff') format('woff'), url('../fonts/Gotham-BookItalic/Gotham-BookItalic.ttf') format('truetype'), url('../fonts/Gotham-BookItalic/Gotham-BookItalic.svg#Gotham-BookItalic') format('svg');
+}
+
+@font-face {
+  font-family: "Gotham-Light";
+  src: url('../fonts/Gotham-Light/Gotham-Light.eot?');
+  src: url('../fonts/Gotham-Light/Gotham-Light.eot??#iefix') format('embedded-opentype'), url('../fonts/Gotham-Light/Gotham-Light.woff') format('woff'), url('../fonts/Gotham-Light/Gotham-Light.ttf') format('truetype'), url('../fonts/Gotham-Light/Gotham-Light.svg#Gotham-Light') format('svg');
+}
+
+@font-face {
+  font-family: "Gotham-LightItalic";
+  src: url('../fonts/Gotham-LightItalic/Gotham-LightItalic.eot?');
+  src: url('../fonts/Gotham-LightItalic/Gotham-LightItalic.eot??#iefix') format('embedded-opentype'), url('../fonts/Gotham-LightItalic/Gotham-LightItalic.woff') format('woff'), url('../fonts/Gotham-LightItalic/Gotham-LightItalic.ttf') format('truetype'), url('../fonts/Gotham-LightItalic/Gotham-LightItalic.svg#Gotham-LightItalic') format('svg');
+}
+*/
