@@ -1,14 +1,27 @@
 #require 'compass/import-once/activate'
+require 'compass-normalize'
+require 'rgbapng'
+require 'toolkit'
+require 'breakpoint'
+#require 'singularitygs'
 require 'susy'
 require 'sass-globbing'
+
 # Require any additional compass plugins here.
 
 # Set this to the root of your project when deployed:
-http_path = "/"
 css_dir = "css"
 sass_dir = "sass"
 images_dir = "images"
 javascripts_dir = "js"
+fonts_dir = "fonts"
+
+# To enable relative paths to assets via compass helper functions. Since Drupal
+# themes can be installed in multiple locations, we don't need to worry about
+# the absolute path to the theme from the server omega.
+#relative_assets = true
+
+
 
 # You can select your preferred output style here (can be overridden via the command line):
 # output_style = :expanded or :nested or :compact or :compressed

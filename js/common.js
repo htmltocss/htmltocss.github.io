@@ -1,213 +1,50 @@
+$(function() {	
+	'use strict';
 
-
-$(function() {				
-	function sassRecurse($item) {  
-		var result = '';
-		var siblingTracker = [];
-	    $item.each(function() { 	    	
-	        var element = $(this);	        	       	        
-	        // skip system tags (link, script, title etc)
-	        if ($.inArray(element.tagNameLowerCase(), getSystemTags()) !== -1) {
-	        	return '';
-	        }	         
-	        // get class, id or tag name of current element
-	        var sassEl = getSassData(element);	        
-	        // elements should not be repeated within same level
-	        if ($.inArray(sassEl, siblingTracker) === -1) {
-	        	// add current element to sibling tracker if it's not there so far
-		        siblingTracker[siblingTracker.length] = sassEl;		
-		        // get parents number to set indent per each element
-		        var parentsCount = element.parents().length + 1;
-		        var indent = Array(parentsCount).join('\t');		        
-		        // if element has children - start resursion
-		        if ( element.children().length > 0 ) {	        	
-		        	result += '\n' + indent + sassEl + ' { \n' + sassRecurse(element.children()) + indent + '}\n';
-		        } 
-		        // empty element = text - skip it
-		        else if (sassEl != '') {	        	
-		        	result += '\n' + indent  + sassEl + ' { \n\n' + indent + '}\n';
-		        }
-		    }		    
-	    });  
-
-	    return result;  
-	}
-	
-	function cssRecurse($item) {  
-		var result = '';
-		var siblingTracker = [];
-	    $item.each(function() {  	        
-	        var element = $(this);
-	        // skip system tags (link, script, title etc)
-	        if ($.inArray(element.tagNameLowerCase(), getSystemTags()) !== -1) {
-	        	return '';
-	        }
-	        var cssEl = getCssData(element).trim();	  	        
-	        indent = '';
-	        // elements should not be repeated within same level
-	        if ($.inArray(cssEl, siblingTracker) === -1) {
-	        	// add current element to sibling tracker if it's not there so far
-		        siblingTracker[siblingTracker.length] = cssEl;
-		        
-		        // if element has children - start resursion
-		        if ( element.children().length > 0 ) {	        	
-		        	result += cssEl + ' { \n\n' + indent + '}\n\n';
-		        	result += cssRecurse(element.children());
-		        } 
-		        // empty element = text - skip it
-		        else if (cssEl != '') {	        	
-		        	result += indent  + cssEl + ' { \n\n' + indent + '}\n\n';
-		        }		        
-		    }		    
-	    });  
-
-	    return result;  
-	} 
-
-	function parseSassElement(element) {
-		var selectorName = '';
-		// get tag name
-		tag = element.prop("tagName");
-		// if element is not text...
-		if (tag != undefined) {
-			tag = tag.toLowerCase();
-			var classLine = element.attr('class');
-			var className = '';
-
-			// Option: use first class if element has more than one
-			// Updated: last class will be taken
-			if (classLine) {
-				classLine = classLine.trim();
-				className = classLine.split(' ')[classLine.split(' ').length-1];
-			}
-			// Option: use all classes if element has more than one
-			/*if (className) {
-				className = className.replace(/ /g, '.');
-			}*/
-
-			selectorName = className ? '.' + className : '';
-			// class is absent ?
-			if (selectorName == '') {
-				idName = element.attr('id');
-				selectorName = idName ? '#' + idName : '';
-			}
-			// id is absent as well ?
-			if (selectorName == '') {
-				selectorName = tag;
-			}
-		}
-
-		return selectorName;
-	}
-
-	function parseCssElement(element) {
-		var selectorName = '';
-		// get tag name
-		tag = element.prop("tagName");
-		// if element is not text...
-		if (tag != undefined) {
-			tag = tag.toLowerCase();
-			var classLine = element.attr('class');
-			var className = '';
-			
-			// Updated: last class will be taken
-			if (classLine) {
-				classLine = classLine.trim();
-				className = classLine.split(' ')[classLine.split(' ').length-1];
-			}
-			// Option: use first class if element has more than one			
-			//if (className) {
-			//	className = className.split(' ')[0];
-			//}
-			// Option: use all classes if element has more than one
-			/*if (className) {
-				className = className.replace(/ /g, '.');
-			}*/
-
-			selectorName = className ? '.' + className : '';
-			// class is absent ?
-			if (selectorName == '') {
-				idName = element.attr('id');
-				selectorName = idName ? '#' + idName : '';
-			}
-			// id is absent as well ?
-			if (selectorName == '') {
-				selectorName = tag;
-			}
-		}
-
-		return selectorName;
-	}
-
-	function parseParents(element) {
-		return element.parents()
-			.map(function() {					
-				return parseCssElement($(this));
-			})
-			.get()
-			.reverse()
-			.join(" ");
-	}
-
-	function getSassData(element) {						
-		var result = '';
-		var selectorName = parseSassElement(element);		
-
-		return selectorName;
-	}
-
-	function getCssData(element) {						
-		var result = '';
-		var selectorName = parseCssElement(element);
-		if (selectorName != '') {
-			var parentEls = parseParents(element);
-			result = parentEls + ' ' + selectorName;
-		}
-
-		return result;
-	}	
-
-	/**
-	 * get tag name by jQuery element
-	 * @return {Tage name string or empty value '' if element is not a tag}
-	 */
-	jQuery.fn.tagNameLowerCase = function() {
-		var el = this;
-		var tag = this.prop("tagName");
-		if (tag != undefined) {
-        	tag = tag.toLowerCase();
-        }
-		return tag;
-	}	
-
-	function getSystemTags() {
-		return ['head', 'script', 'title', 'meta', 'style', 'link'];
-	}
-	
-	$(".e-generate-css").click(function() {		
+	$(".e-generate-css").click(function() {				
 		var htmlEditor = ace.edit("html-editor");
 		var cssEditor = ace.edit("css-editor");		
 		var strHtml = htmlEditor.session.getValue();
-		
-		var cssResult = cssRecurse($(strHtml));		
+		// get updates from input form and put it 
+		// into global variable
+		updateSettings();		
 
+		var cssResult = cssRecurse($(strHtml));
 		// remove first-last new lines
-		cssResult = cssResult.trim();		
-		
+		cssResult = cssResult.trim();				
 		cssEditor.session.setValue(cssResult);	
+
+		// refresh css status to "Ready for Coping"
+		$("#e-copy").addClass('btn-danger');
+		return false;
 	});
 
 	$(".e-generate-sass").click(function() {
 		var htmlEditor = ace.edit("html-editor");
-		var cssEditor = ace.edit("css-editor");
-		
-		var strHtml = htmlEditor.session.getValue();
-		
-		var sassResult = sassRecurse($(strHtml));
+		var cssEditor = ace.edit("css-editor");		
+		var strHtml = htmlEditor.session.getValue();		
+		// get updates from input form and put it 
+		// into global variable
+		updateSettings();
+
+		var sassResult = '';
+		/*if (settings.rawTags == 'show_all') {
+			sassResult = sassRecurse($(strHtml));	
+		} else if (settings.rawTags == 'remove_all') {
+			
+		}*/
+
+		sassResult = sassRecurse($(strHtml));			
 		// remove first-last new lines
 		sassResult = sassResult.trim();
+		sassResult = sassResult.replace(/[\n]{3}/g,'\n\n');
+		
 		$('#e-css_input').val(sassResult);				
 		cssEditor.session.setValue(sassResult);		
+
+		// refresh css status to "Ready for Coping"
+		$("#e-copy").addClass('btn-danger');
+		return false;
 	});	
 
 	$(".e-reset").click(function() {
@@ -215,14 +52,91 @@ $(function() {
 		var cssEditor = ace.edit("css-editor");
 		htmlEditor.session.setValue('');
 		cssEditor.session.setValue('');
+		updateExclusionsFields();
+		return false;
+	});	
+
+	$("#e-paste").click(function() {
+		var htmlEditor = ace.edit("html-editor");
+		htmlEditor.selectAll();
+		htmlEditor.focus();
+		return false;
 	});
 
-	var text = $('#html-editor').html();
-    var htmlEditor = ace.edit("html-editor");
-	htmlEditor.session.setValue(text);
-    htmlEditor.setTheme("ace/theme/chrome");
-    htmlEditor.getSession().setMode("ace/mode/html");
-    var cssEditor = ace.edit("css-editor");
-    cssEditor.setTheme("ace/theme/chrome");		        
-    cssEditor.getSession().setMode("ace/mode/scss");
+	$("#e-update-excluded-fields").click(function() {
+		updateExclusionsFields();
+		return false;
+	});
+	
+
+	$('#bookmarkme').click(function(){
+        alert('Press ' + (navigator.userAgent.toLowerCase().indexOf('mac') != - 1 ? 'Command/Cmd' : 'CTRL') + ' + D to bookmark this Generator.');
+        return false;
+    }); 
+
+	$("#e-copy").zclip({ 
+		path: '/js/lib/zeroclipboard/ZeroClipboard.swf', 
+		copy: function() {
+			var cssEditor = ace.edit("css-editor");
+			return cssEditor.session.getValue();
+		},
+		afterCopy: function() { 
+			$("#e-copy").removeClass('btn-danger'); 
+			var cssEditor = ace.edit("css-editor");
+			cssEditor.selectAll();
+			cssEditor.focus();
+		}
+	});	
+
+	function init() {
+		var htmlEditor = ace.edit("html-editor");
+		var cssEditor = ace.edit("css-editor");
+
+		// Editor - Редактор : Свои API
+		// Session - Сессия : Cвои API	 
+		var text = '<div><a id="ssss" class="fff ccc lll" href="#">aaa</a></div>';
+		//var text = '<div class="   first my-class last" id="my-id"><a id="ssss" class="fff ccc lll" href="#">aaa</a></div>\n<div class="first my-class-2 center-1 center-2 last-2">\n\tHello\n</div>';
+		/*+'<select size="3" multiple name="hero[]">'
+    	+'<option disabled>Choose your hero</option>'
+    	+'<option value="dragon">Dragon</option>'
+    	+'<option selected value="gena">Gena</option>'
+    	+'<option value="zombie">Zombie</option>'
+   		+'</select>';*/
+   		//updateExcludedClasses();
+   		//updateExcludedIds();   		
+
+
+   		setTimeout(function() {
+   			$('#excluded_classes').chosen({allow_single_deselect:true});
+   			$('#excluded_ids').chosen({allow_single_deselect:true});
+   		}, 10);
+
+	    var htmlEditor = ace.edit("html-editor");
+
+	    htmlEditor.on('paste', function() {	    	
+	    	setTimeout(function() {
+	    		updateExclusionsFields();			
+	    	}, 50);
+	    });
+
+		htmlEditor.session.setValue(text);
+		updateExcludedClasses();
+		updateExcludedIds();
+	    htmlEditor.setTheme("ace/theme/chrome");
+	    htmlEditor.getSession().setMode("ace/mode/html");
+	    
+	    htmlEditor.getSession().setTabSize(2);
+	    htmlEditor.selectAll();
+		htmlEditor.focus();
+
+
+	    var cssEditor = ace.edit("css-editor");
+	    cssEditor.setTheme("ace/theme/chrome");		        
+	    cssEditor.getSession().setTabSize(2);
+	    cssEditor.getSession().setMode("ace/mode/scss");
+	}	
+
+	//
+	init();
+	
 });

@@ -4,14 +4,23 @@
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="Convert HTML to CSS/SCSS/LESS Online">
-		<title>Online HTML to CSS/SCSS/LESS Converter</title>	
+		<meta name="description" content="Convert (generate) HTML to CSS/SCSS/LESS Online">
+		<link rel="shortcut icon" href="http://pizza.byethost4.com/sites/default/files/fav-icon_1.png" type="image/png">
+		<title>Online HTML to CSS/SCSS/LESS Converter (Generator)</title>	
 		<link rel="stylesheet" type="text/css" href="css/normalize.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="stylesheet" type="text/css" href="js/lib/chosen/chosen.min.css">
 
 		<script type="text/javascript" src="js/lib/jquery.min.js"></script>		
-		<script src="js/lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/common.js"></script>
+		<script type="text/javascript" src="js/lib/ace/ace.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/lib/zeroclipboard/jquery.zclip.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/lib/chosen/chosen.jquery.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/lib/chosen/chosen.proto.min.js" charset="utf-8"></script>
+		
+		<script type="text/javascript" src="js/vars.js"></script>
+		<script type="text/javascript" src="js/recursions.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>		
+		
 		<script>
 		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -29,36 +38,108 @@
 		<a href="https://github.com/htmltocss/htmltocss.github.io"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
 		<div class="l-container">
 			<header>
-				<h1>HTML to CSS/SCSS/LESS Converter</h1>
-				<p>All you need to do is put some valid HTML and click on a button!</p>
+				<h1>HTML to CSS/SCSS/LESS Converter (Generator)</h1>
+				<p class="descr">All you need to do is put some valid HTML and click on a button!</p>
+				<a id="bookmarkme" href="#" rel="sidebar" title="how to add this page to bookmarks">How Add to Bookmarks?</a>
 			</header>
 			
 			<div class="l-buttons">
-				<button class="btn btn-info e-generate-css">Convert to CSS</button>
-				<button class="btn btn-primary e-generate-sass">Convert to SCSS/LESS</button>
+				<button class="btn btn-info e-generate-css">Generate CSS</button>
+				<button class="btn btn-primary e-generate-sass">Generate SCSS/LESS</button>
+				<button class="btn btn-success e-generate-base" disabled>Generate Base</button>
 				<button class="btn btn-danger e-reset">Reset</button>
 			</div>
-	
-			<div class="l-editors">
-				<div class="html-wrapper">
-					<h3>HTML</h3>	
-					<div id="html-editor"><form action="/node/1" id="search-block-form">
-	<h2 class="element-invisible">Search form</h2>
-	<div class="form-item form-item-search-block-form">
-		<label class="element-invisible">Search </label>
-		<input type="text" name="sb_form" class="form-text">
-	</div>
-	<div class="form-actions form-wrapper" id="edit-actions">
-		<input type="submit" id="edit-submit" value="Search">
-	</div>
-</form>
+
+			<div class="l-page">
+				<div class="l-sidebar">				
+					<fieldset class="advanced-settings">
+						<form class="advanced-settings-form">						
+							<div class="form-item radio-buttons">
+								<label>Selector Priority</label>
+								<div class="field">
+									<div class="radio-item">
+										<input type="radio" name="sel_priority" id="sel_priority-class" value="class" checked="checked">
+										<label for="sel_priority-class">Class</label>
+									</div>
+									<div class="radio-item">
+										<input type="radio" name="sel_priority" id="sel_priority-id" value="id">
+										<label for="sel_priority-id">Id</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-item radio-buttons">
+								<label>Class Order</label>
+								<div class="field">
+									<div class="radio-item">
+										<input type="radio" name="class_order" id="class_order-first" value="first" checked="checked">
+										<label for="class_order-first">First</label>
+									</div>
+									<div class="radio-item">
+										<input type="radio" name="class_order" id="class_order-last" value="last">
+										<label for="class_order-last">Last</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-item radio-buttons">
+								<label>Raw Tags</label>
+								<div class="field">
+									<div class="radio-item">
+										<input type="radio" name="raw_tags" id="raw_tags-show-all" value="show_all">
+										<label for="raw_tags-show-all">Show All</label>
+									</div>
+									<div class="radio-item">
+										<input type="radio" name="raw_tags" id="raw_tags-remove-all" value="remove_all" checked="checked">
+										<label for="raw_tags-remove-all">Remove All</label>
+									</div>
+									<div class="radio-item">
+										<input type="radio" name="raw_tags" id="raw_tags-remove-all-root" value="remove_all_root" disabled>
+										<label for="raw_tags-remove-all-root">Remove All Root</label>
+									</div>
+
+									<div class="radio-item">
+										<input type="radio" name="raw_tags" id="raw_tags-show-tails" value="show_only_tails" disabled>
+										<label for="raw_tags-show-tails">Show Only Tails</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-item form-select chosen">
+								<label>Excluded Classes</label>
+								<div class="field">								
+									<select name="excluded_classes" id="excluded_classes" class="anchor" data-placeholder="Choose classes" multiple>					
+									</select>
+								</div>
+							</div>
+							<div class="form-item form-select chosen">
+								<label>Excluded Ids</label>
+								<div class="field">								
+									<select name="excluded_ids" id="excluded_ids" class="anchor" data-placeholder="Choose ids" multiple>					
+									</select>
+								</div>
+							</div>
+						</form>
+					</fieldset>
+				</div>
+		
+				<div class="l-editors">
+					<div class="html-wrapper">
+						<h3>HTML</h3>						
+						<a href="#" id="e-paste" class="btn btn-danger e-html-paste">Prepare to paste</a>
+						<a href="#" id="e-update-excluded-fields" class="btn btn-success">Update Classses-Ids fields</a>
+						<a href="#" id="e-format-html" class="btn btn-primary e-format-html" disabled>Beautify</a>
+						<div id="html-editor">						
+						</div>
+					</div>
+					<div class="css-wrapper">
+						<h3>Stylesheets</h3>
+						<a href="#" id="e-copy" class="btn btn-success e-css-copy">Copy</a>
+						<div id="css-editor"></div>
 					</div>
 				</div>
-				<div class="css-wrapper">
-					<h3>Stylesheets</h3>
-					<div id="css-editor"></div>
-				</div>
 			</div>
+
 		    
 		    <script>        		                
 		    </script>

@@ -1,3 +1,15 @@
+@import "compass";
+@import "susy";
+@import "breakpoint";
+@import "toolkit";
+
+$susy: (
+  columns: 12,
+  gutters: 1/4,
+  container: 1024//,
+  //debug: (image:show)
+);
+
 header {
   @include pie-clearfix;
 
@@ -5,11 +17,39 @@ header {
   padding-bottom: 7px;
   
   border-bottom: 2px solid $darker_grey_color;
+
+  .descr {
+    float: left;
+  }
+  #bookmarkme {
+    float: right;
+  }
+}
+
+.l-page {
+  @include container; 
+
+  .l-sidebar {
+    @include span(3 of 12);
+  }
+
+  .l-editors {
+    @include span(9 of 12 last);
+  }
+}
+
+.l-actions {
+  @include pie-clearfix;
+    .advanced-settings {
+
+  }
 }
 
 .l-buttons {
-  @include pie-clearfix;
+  border-bottom: 1px solid $darker_grey_color;
+  padding-bottom: 10px;
 }
+
 
 .l-editors {
   @include pie-clearfix;
@@ -21,21 +61,63 @@ header {
   max-width: 1024px;
 }
 
-.html-wrapper {
+
+.html-wrapper, .css-wrapper {
   float: left;
-  width: 48%; 
+  width: 100%;  
+
+  margin-top: 15px;
+
+  h3 {
+    display: inline-block;    
+        
+    margin-bottom: 0;    
+    margin-top: 0px;
+    
+    font-size: 38px;
+    
+    line-height: 35px;
+    vertical-align: middle;
+
+    text-transform: uppercase;
+  }
+
+  .e-html-paste, .e-css-copy {
+    vertical-align: bottom;
+  }
+
+  #html-editor, #css-editor {
+    margin-top: 8px;
+  }
+
+  .btn {
+    vertical-align: middle;
+  }
 }
 
-#html-editor {                                                    
+
+.html-wrapper { 
+
+  .e-html-paste {
+    display: inline-block;
+    
+    margin-left: 20px;
+  }
+}
+
+#html-editor {                                                      
+
   height: 250px;
+  
   border: 1px solid #ccc;
 }
 
-.css-wrapper {              
-  float: left;
-  width: 48%;
-
-  margin-left: 4%;
+.css-wrapper {                    
+  
+  .e-css-copy {
+    display: inline-block;
+    margin-left: 20px;
+  }
 }
 
 #css-editor {                                                   
