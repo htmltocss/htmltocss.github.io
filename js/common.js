@@ -51,6 +51,7 @@ $(function() {
 		var htmlEditor = ace.edit("html-editor");
 		var cssEditor = ace.edit("css-editor");
 		htmlEditor.session.setValue('');
+		htmlEditor.focus();
 		cssEditor.session.setValue('');
 		updateExclusionsFields();
 		return false;
