@@ -1,5 +1,31 @@
 'use strict';
 
+function generateStyles() {
+	// get updates from input form and put it 
+	// into global variable
+	updateSettings();
+
+	var htmlEditor = ace.edit("html-editor");
+	var cssEditor = ace.edit("css-editor");
+
+	var strHtml = htmlEditor.session.getValue();
+	var result = '';
+	var activeBtn = $('.btn-group .active');
+	if (activeBtn.hasClass('e-generate-sass')) {
+		//
+		result = sassRecurse($(strHtml));
+		result = result.trim();
+		result = result.replace(/[\n]{3}/g,'\n\n');
+	} else if (activeBtn.hasClass('e-generate-css')) {
+		//
+		result = cssRecurse($(strHtml));
+		result = result.trim();
+	}				
+
+	$('#e-css_input').val(result);				
+	cssEditor.session.setValue(result);	
+}
+
 function classesRecurse($item) {  		
 	var siblingTracker = [];	
 	var classes = [];
@@ -129,27 +155,7 @@ function sassRecurse($item) {
     });  
 
 
-	/*	
-    // if tag is placeholder's type -- like 'select'
-    if ($.inArray(element.tagNameLowerCase(), getPlaceholderTags()) !== -1) {
-    	console.log('1ccc');
-    	result += '\n' + indent + sassEl + ' { \n\n' + sassRecurse(element.children()) + indent + '}\n\n';	        
-    } 
-    // if element has children (or in some cases non-raw children) - start resursion
-    else if (settings.rawTags == 'remove_all' && element.rawTailChildrenLength() == element.children().length) {
-    	console.log('2ccc');
-    	result += '\n' + indent + sassEl + ' { \n\n' + sassRecurse(element.children()) + indent + '}\n';	        	
-    } 
-    // default variant - element has children - dig into them 
-    else if (element.children().length > 0) {	        	
-    	console.log('3ccc');
-    	result += '\n' + indent + sassEl + ' { \n' + sassRecurse(element.children()) + indent + '}\n';
-    } 
-    // empty element = text - skip it
-    else if (sassEl != '') {	        	
-    	result += '\n' + indent  + sassEl + ' { \n\n' + indent + '}\n';
-    }
-	*/
+
 
     return result;
 }
@@ -295,37 +301,13 @@ function parseSassElement(element) {
 
 			return selectorPrefix + selectorName;
 		}  
-		// use only tag for elements that has no classes or ids
-		return tag;
-
-
-		var classLine = element.attr('class');
-		var className = '';
-
-		// Option: use first class if element has more than one
-		// Updated: last class will be taken
-		if (classLine) {
-			classLine = classLine.trim();
-			className = classLine.split(' ')[classLine.split(' ').length-1];
-		}
-		// Option: use all classes if element has more than one
-		/*if (className) {
-			className = className.replace(/ /g, '.');
-		}*/
-
-		selectorName = className ? '.' + className : '';
-		// class is absent ?
-		if (selectorName == '') {
-			idName = element.attr('id');
-			selectorName = idName ? '#' + idName : '';
-		}
-		// id is absent as well ?
-		if (selectorName == '') {
-			selectorName = tag;
+		if (settings.rawTags == 'show_all') {
+			// use only tag for elements that has no classes or ids
+			return tag;
 		}
 	}
 
-	return selectorName;
+	return '';
 }
 
 function parseCssElement(element) {

@@ -16,7 +16,8 @@
 		<script type="text/javascript" src="js/lib/zeroclipboard/jquery.zclip.min.js" charset="utf-8"></script>
 		<script type="text/javascript" src="js/lib/chosen/chosen.jquery.min.js" charset="utf-8"></script>
 		<script type="text/javascript" src="js/lib/chosen/chosen.proto.min.js" charset="utf-8"></script>
-		
+		<script type="text/javascript" src="js/lib/jquery.timer.js"></script>
+
 		<script type="text/javascript" src="js/vars.js"></script>
 		<script type="text/javascript" src="js/recursions.js"></script>
 		<script type="text/javascript" src="js/common.js"></script>		
@@ -41,13 +42,11 @@
 				<h1>HTML to CSS/SCSS/LESS Converter (Generator)</h1>
 				<p class="descr">All you need to do is put some valid HTML and click on a button!</p>
 				<a id="bookmarkme" href="#" rel="sidebar" title="how to add this page to bookmarks">How Add to Bookmarks?</a>
+				<div class="timer" data-seconds-left="3"></div>
 			</header>
 			
-			<div class="l-buttons">
-				<button class="btn btn-info e-generate-css">Generate CSS</button>
-				<button class="btn btn-primary e-generate-sass">Generate SCSS/LESS</button>
-				<button class="btn btn-success e-generate-base" disabled>Generate Base</button>
-				<button class="btn btn-danger e-reset">Reset</button>
+			<div class="l-buttons">			
+				<button class="btn btn-success e-generate-base" disabled>Generate Base</button>				
 			</div>
 
 			<div class="l-page">
@@ -126,15 +125,18 @@
 				<div class="l-editors">
 					<div class="html-wrapper">
 						<h3>HTML</h3>						
-						<a href="#" id="e-paste" class="btn btn-danger e-html-paste">Prepare to paste</a>
-						<a href="#" id="e-update-excluded-fields" class="btn btn-success">Update Classses-Ids fields</a>
-						<a href="#" id="e-format-html" class="btn btn-primary e-format-html" disabled>Beautify</a>
+						<a href="#" id="e-paste" class="btn btn-danger e-html-paste">Select All</a>						
+						<a href="#" id="e-format-html" class="btn btn-primary e-format-html" disabled>Format tabs</a>
 						<div id="html-editor">						
 						</div>
 					</div>
 					<div class="css-wrapper">
-						<h3>Stylesheets</h3>
+						<h3>Styles</h3>
 						<a href="#" id="e-copy" class="btn btn-success e-css-copy">Copy</a>
+						<div class="btn-group">
+						<button class="btn btn-info e-generate-css">CSS</button>
+						<button class="btn btn-info active e-generate-sass">SCSS/LESS</button>
+						</div>
 						<div id="css-editor"></div>
 					</div>
 				</div>

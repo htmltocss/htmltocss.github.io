@@ -8323,6 +8323,11 @@ button.close {
   }
 }
 /* No files to import found in abstractions/functions/**\/* */
+/* line 1, ../sass/base/_buttons.base.scss */
+.btn.active {
+  box-shadow: 0 0 5px #51cbee;
+}
+
 /* line 1, ../sass/base/_common.base.scss */
 * {
   box-sizing: border-box;
