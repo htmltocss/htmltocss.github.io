@@ -32,6 +32,19 @@ $(function() {
 	 	generateStyles();	 	
 	 });
 	
+	$(".e-format-html").click(function() {
+		var htmlEditor = ace.edit("html-editor");
+		var code = htmlEditor.session.getValue();
+		$('.html-status').text('Tabs updating...'); 
+		
+		cleanHTML(code);	
+		elementBlink($('#html-editor'));
+
+		$('.html-status').text('Tabs updated'); 
+
+		return false;
+	});		
+
 	$("#e-select-all").click(function() {
 		var htmlEditor = ace.edit("html-editor");
 		htmlEditor.selectAll();
@@ -39,6 +52,8 @@ $(function() {
 
 		return false;
 	});		
+
+	
 
 	$('#bookmarkme').click(function(){
         alert('Press ' + (navigator.userAgent.toLowerCase().indexOf('mac') != - 1 ? 'Command/Cmd' : 'CTRL') + ' + D to bookmark this Generator.');

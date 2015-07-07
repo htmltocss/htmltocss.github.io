@@ -8572,7 +8572,7 @@ header #bookmarkme {
 }
 
 /* line 139, ../sass/layout/_main.layout.scss */
-#css-editor, .chosen-container {
+#html-editor, #css-editor, .chosen-container {
   -webkit-transition: all 0.22s ease-in-out;
   -moz-transition: all 0.22s ease-in-out;
   -ms-transition: all 0.22s ease-in-out;
@@ -8581,7 +8581,7 @@ header #bookmarkme {
   border: auto;
 }
 /* line 147, ../sass/layout/_main.layout.scss */
-#css-editor.updated, .chosen-container.updated {
+#html-editor.updated, #css-editor.updated, .chosen-container.updated {
   box-shadow: 0 0 10px #00a2d1;
   border: 1px solid #51cbee;
   -webkit-transition: all 0.22s ease-in-out;

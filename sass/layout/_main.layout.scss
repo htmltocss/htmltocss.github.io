@@ -136,7 +136,7 @@ header {
 }
 
 $blink-speed: 0.22s;
-#css-editor, .chosen-container {
+#html-editor, #css-editor, .chosen-container {
   -webkit-transition: all $blink-speed ease-in-out;
   -moz-transition: all $blink-speed ease-in-out;
   -ms-transition: all $blink-speed ease-in-out;
