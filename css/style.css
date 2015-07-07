@@ -8325,7 +8325,7 @@ button.close {
 /* No files to import found in abstractions/functions/**\/* */
 /* line 1, ../sass/base/_buttons.base.scss */
 .btn.active {
-  box-shadow: 0 0 5px #51cbee;
+  box-shadow: 0 0 7px #4D4B52;
 }
 
 /* line 1, ../sass/base/_common.base.scss */
@@ -8397,7 +8397,7 @@ p {
   padding-bottom: 15px;
 }
 /* line 48, ../sass/base/_forms.base.scss */
-.advanced-settings-form #excluded_classes, .advanced-settings-form #excluded_ids {
+.advanced-settings-form #excluded_classes, .advanced-settings-form #excluded_ids, .advanced-settings-form #excluded_tags {
   width: 100%;
 }
 

@@ -14,21 +14,8 @@ $(function() {
 
 		return false;
 	});	
-
-	/*
-	$(".e-generate-sass").click(function() {
-		
-		$('.btn-group .btn').removeClass('active');
-		$(this).addClass('active');
-
-		generateStyles();		
-
-		// refresh css status to "Ready for Coping"
-		$("#e-copy").addClass('btn-danger');
-		return false;
-	});	
-	*/
-	 $('input[type=radio]').change(function() {
+	
+	$('input[type=radio]').change(function() {
 	 	generateStyles();	 	
 	 });
 	
@@ -53,7 +40,11 @@ $(function() {
 		return false;
 	});		
 
-	
+	$(".e-generate-base").click(function() {
+		var htmlEditor = ace.edit("html-editor");		
+
+		return false;
+	});		 
 
 	$('#bookmarkme').click(function(){
         alert('Press ' + (navigator.userAgent.toLowerCase().indexOf('mac') != - 1 ? 'Command/Cmd' : 'CTRL') + ' + D to bookmark this Generator.');
@@ -85,13 +76,13 @@ $(function() {
         	$('.html-status').text('Styles updated');
         	timer.stop();
         }); 
-        timer.set({ time : 3000, autostart : false });
+        timer.set({ time : 1000, autostart : false });
         timer.stop();
 		             
 
 		// Editor - Редактор : Свои API
 		// Session - Сессия : Cвои API	 
-		var text = '<div><a id="ssss" class="fff ccc lll" href="#">aaa</a></div>';		
+		var text = '<div class="parent"><label>Title</label><div><a id="ssss" class="fff ccc lll" href="#">aaa</a></div></div>';		
 		//var text = '<div class="   first my-class last" id="my-id"><a id="ssss" class="fff ccc lll" href="#">aaa</a></div>\n<div class="first my-class-2 center-1 center-2 last-2">\n\tHello\n</div>';
 		/*+'<select size="3" multiple name="hero[]">'
     	+'<option disabled>Choose your hero</option>'
@@ -106,8 +97,9 @@ $(function() {
    		setTimeout(function() {
    			$('#excluded_classes').chosen({ allow_single_deselect:true });   			
    			$('#excluded_ids').chosen({ allow_single_deselect:true });
+   			$('#excluded_tags').chosen({ allow_single_deselect:true });
    			// update Styles field after switching between "Chosen" fields
-   			$('#excluded_classes, #excluded_ids').chosen().change(function() { 
+   			$('#excluded_classes, #excluded_ids, #excluded_tags').chosen().change(function() { 
    				generateStyles();    				
    			});
    		}, 10);

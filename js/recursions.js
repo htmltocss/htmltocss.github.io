@@ -118,8 +118,11 @@ function sassRecurse($item) {
         }	         
         // get class, id or tag name of current element
         var sassEl = getSassData(element);	        
+        
         // elements should not be repeated within same level
-        if ($.inArray(sassEl, siblingTracker) === -1) {
+        // sassEl == '' means empty selector (RawTags = RemoveAll)
+        if ($.inArray(sassEl, siblingTracker) === -1 || sassEl == '') {
+
         	// add current element to sibling tracker if it's not there so far
 	        siblingTracker[siblingTracker.length] = sassEl;		
 	        // get no Raw parents number to set indent per each element	        
@@ -134,11 +137,11 @@ function sassRecurse($item) {
 		        // if rawTags is in remove All state and tag is raw...
 		        if (settings.rawTags == 'remove_all' && element.isRawTag()) {
 		        	// remove and digging deep to find children..
-		        	if (element.children().length > 0) {	        			        	
+		        	if (element.children().length > 0) {		        		
 		        		return result += sassRecurse(element.children());
 		        	} 
 		        	// remove raw tag
-		        	else {	        		
+		        	else {	        				        		
 		        		return '';
 		        	}	      
 		        }	  
@@ -214,7 +217,8 @@ function cssRecurse($item) {
         var cssEl = getCssData(element).trim();	  	        
         var indent = '';
         // elements should not be repeated within same level
-        if ($.inArray(cssEl, siblingTracker) === -1) {
+        // sassEl == '' means empty selector (RawTags = RemoveAll)
+        if ($.inArray(cssEl, siblingTracker) === -1 || cssEl == '') {
         	// add current element to sibling tracker if it's not there so far
 	        siblingTracker[siblingTracker.length] = cssEl;
 
@@ -247,7 +251,7 @@ function cssRecurse($item) {
 function parseSassElement(element) {
 	var selectorName = '';
 	// get tag name
-	var tag = element.prop("tagName");
+	var tag = element.prop("tagName");	
 	// if element is not text...
 	if (tag != undefined) {
 		tag = tag.toLowerCase();

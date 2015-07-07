@@ -47,7 +47,7 @@
 			</header>
 			
 			<div class="l-buttons">			
-				<button class="btn btn-success e-generate-base" disabled>Generate Base</button>				
+				<button class="btn btn-success e-generate-base">Generate Base</button>				
 			</div>
 
 			<div class="l-page">
@@ -86,11 +86,11 @@
 								<label>Raw Tags</label>
 								<div class="field">
 									<div class="radio-item">
-										<input type="radio" name="raw_tags" id="raw_tags-show-all" value="show_all" checked="checked">
+										<input type="radio" name="raw_tags" id="raw_tags-show-all" value="show_all">
 										<label for="raw_tags-show-all">Show All</label>
 									</div>
 									<div class="radio-item">
-										<input type="radio" name="raw_tags" id="raw_tags-remove-all" value="remove_all">
+										<input type="radio" name="raw_tags" id="raw_tags-remove-all" value="remove_all" checked="checked">
 										<label for="raw_tags-remove-all">Remove All</label>
 									</div>
 									<div class="radio-item">
@@ -116,6 +116,15 @@
 								<label>Excluded Ids</label>
 								<div class="field">								
 									<select name="excluded_ids" id="excluded_ids" class="anchor" data-placeholder="Choose ids" multiple>					
+									</select>
+								</div>
+							</div>
+							<div class="form-item form-select chosen">
+								<label>Excluded Tags</label>
+								<div class="field">								
+									<select name="excluded_tags" id="excluded_tags" class="anchor" data-placeholder="Choose tags" multiple>	
+										<option value="input-hidden" selected>input-hidden</option>
+										<option value="img">img</option>
 									</select>
 								</div>
 							</div>
