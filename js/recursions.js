@@ -20,7 +20,9 @@ function generateStyles() {
 		//
 		result = cssRecurse($(strHtml));
 		result = result.trim();
-	}				
+	}	
+
+	elementBlink($('#css-editor'));
 
 	$('#e-css_input').val(result);				
 	cssEditor.session.setValue(result);	
@@ -397,25 +399,48 @@ function getIdsFromHtml() {
 
 function updateExcludedClasses() {
 	var items = getClassesFromHtml();
-	var field_select = $('#excluded_classes');
+	var field_select = $('#excluded_classes');	
+	var selected_items = field_select.val();
+		
 	field_select.html('');
 	$.each(items, function (i, className) {
-	    field_select.append($('<option>', { 
-	        value: className,
-	        text : className 
-	    }));
+	    // don't need to clean classes that are 
+	    // present in html after editing
+	    if ($.inArray(className, selected_items) !== -1) {
+	    	field_select.append($('<option>', { 
+		        value: className,
+		        text : className,
+		        selected : 'selected'
+		    }));	
+	    } else {
+	    	field_select.append($('<option>', { 
+		        value: className,
+		        text : className 
+		    }));	
+	    }
+	    
 	});
 }
 
 function updateExcludedIds() {
 	var items = getIdsFromHtml();	
 	var field_select = $('#excluded_ids');
+	var selected_items = field_select.val();
+
 	field_select.html('');
 	$.each(items, function (i, className) {
-	    field_select.append($('<option>', { 
-	        value: className,
-	        text : className 
-	    }));
+		if ($.inArray(className, selected_items) !== -1) {
+			field_select.append($('<option>', { 
+		        value: className,
+		        text : className,
+		        selected : 'selected'
+		    }));
+		} else {
+			field_select.append($('<option>', { 
+		        value: className,
+		        text : className 
+		    }));
+		}	    
 	});
 }
 
@@ -426,6 +451,13 @@ function updateExclusionsFields() {
 		$('#excluded_classes').trigger("chosen:updated");
 		$('#excluded_ids').trigger("chosen:updated");
 	}, 50);	
+}
+
+function elementBlink(element) {
+	element.addClass('updated');
+	setTimeout(function() {
+		element.removeClass('updated');
+	}, 450);
 }
 
 /**
@@ -440,6 +472,12 @@ jQuery.fn.tagNameLowerCase = function() {
     }
 	return tag;
 }
+
+jQuery.arrayIntersect = function(a, b) {
+    return $.grep(a, function(i) {
+        return $.inArray(i, b) > -1;
+    });
+};
 
 jQuery.fn.isRawTag = function() {
 	var element = $(this);

@@ -13,16 +13,22 @@ $susy: (
 header {
   @include pie-clearfix;
 
-  margin-bottom: 20px;
-  padding-bottom: 7px;
+  margin-bottom: 10px;
+  padding-bottom: 0px;
   
   border-bottom: 2px solid $darker_grey_color;
+
+  p {
+    margin: 0 0 5px;
+  }
 
   .descr {
     float: left;
   }
   #bookmarkme {
     float: right;
+
+    margin-right: 14px;
   }
 }
 
@@ -82,6 +88,10 @@ header {
     text-transform: uppercase;
   }
 
+  .html-status {
+    margin-left: 225px;
+  }
+
   .e-html-paste, .e-css-copy {
     vertical-align: bottom;
   }
@@ -120,9 +130,28 @@ header {
   }
 }
 
-#css-editor {                                                   
+#css-editor {
   height: 250px;
-  border: 1px solid #ccc;
+  border: 1px solid #ccc;  
+}
+
+$blink-speed: 0.22s;
+#css-editor, .chosen-container {
+  -webkit-transition: all $blink-speed ease-in-out;
+  -moz-transition: all $blink-speed ease-in-out;
+  -ms-transition: all $blink-speed ease-in-out;
+  -o-transition: all $blink-speed ease-in-out;
+  box-shadow: none;
+  border: auto;
+
+  &.updated {
+    box-shadow: 0 0 10px rgba(0, 162, 209, 1);
+    border: 1px solid #51cbee;
+    -webkit-transition: all $blink-speed ease-in-out;
+    -moz-transition: all $blink-speed ease-in-out;
+    -ms-transition: all $blink-speed ease-in-out;
+    -o-transition: all $blink-speed ease-in-out;
+  }
 }
 
 footer {

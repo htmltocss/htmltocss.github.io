@@ -32,12 +32,13 @@ $(function() {
 	 	generateStyles();	 	
 	 });
 	
-	$("#e-paste").click(function() {
+	$("#e-select-all").click(function() {
 		var htmlEditor = ace.edit("html-editor");
 		htmlEditor.selectAll();
-		htmlEditor.focus();
+		htmlEditor.focus();		
+
 		return false;
-	});	
+	});		
 
 	$('#bookmarkme').click(function(){
         alert('Press ' + (navigator.userAgent.toLowerCase().indexOf('mac') != - 1 ? 'Command/Cmd' : 'CTRL') + ' + D to bookmark this Generator.');
@@ -62,9 +63,11 @@ $(function() {
 		var htmlEditor = ace.edit("html-editor");
 		var cssEditor = ace.edit("css-editor");		
 		
-		timer = $.timer(function() {
-			console.log('timeout');
+		timer = $.timer(function() {			
         	updateExclusionsFields();
+        	generateStyles();
+        	elementBlink($('.chosen-container'));
+        	$('.html-status').text('Styles updated');
         	timer.stop();
         }); 
         timer.set({ time : 3000, autostart : false });
@@ -88,8 +91,9 @@ $(function() {
    		setTimeout(function() {
    			$('#excluded_classes').chosen({ allow_single_deselect:true });   			
    			$('#excluded_ids').chosen({ allow_single_deselect:true });
+   			// update Styles field after switching between "Chosen" fields
    			$('#excluded_classes, #excluded_ids').chosen().change(function() { 
-   				generateStyles(); 
+   				generateStyles();    				
    			});
    		}, 10);
 
@@ -98,9 +102,10 @@ $(function() {
 
 
 	    htmlEditor.on('paste', function() {	    	
-	    	generateStyles();
+	    	//generateStyles();
 	    });
-	    htmlEditor.on('input', function() {	    	
+	    htmlEditor.on('input', function() {	
+	    	$('.html-status').text('Updating styles...');    	
 	    	if (timer.isActive) {
 				timer.stop();
 				timer.play(true);			
@@ -124,7 +129,7 @@ $(function() {
 	    cssEditor.getSession().setTabSize(2);
 	    cssEditor.getSession().setMode("ace/mode/scss");
 
-	    generateStyles();
+	    //generateStyles();
 	}	
 
 	//

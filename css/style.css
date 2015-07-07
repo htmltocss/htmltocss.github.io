@@ -8350,6 +8350,12 @@ h1, h2, h3, h4, h5 {
 }
 
 /* line 18, ../sass/base/_common.base.scss */
+h1 {
+  margin-top: 15px;
+  font-size: 38px;
+}
+
+/* line 24, ../sass/base/_common.base.scss */
 p {
   font-family: "Gotham-Medium", Verdana;
 }
@@ -8424,8 +8430,8 @@ p {
 /* line 13, ../sass/layout/_main.layout.scss */
 header {
   *zoom: 1;
-  margin-bottom: 20px;
-  padding-bottom: 7px;
+  margin-bottom: 10px;
+  padding-bottom: 0px;
   border-bottom: 2px solid #444b4f;
 }
 /* line 38, ../../../../Ruby22/lib/ruby/gems/2.2.0/gems/compass-core-1.0.3/stylesheets/compass/utilities/general/_clearfix.scss */
@@ -8435,15 +8441,20 @@ header:after {
   clear: both;
 }
 /* line 21, ../sass/layout/_main.layout.scss */
+header p {
+  margin: 0 0 5px;
+}
+/* line 25, ../sass/layout/_main.layout.scss */
 header .descr {
   float: left;
 }
-/* line 24, ../sass/layout/_main.layout.scss */
+/* line 28, ../sass/layout/_main.layout.scss */
 header #bookmarkme {
   float: right;
+  margin-right: 14px;
 }
 
-/* line 29, ../sass/layout/_main.layout.scss */
+/* line 35, ../sass/layout/_main.layout.scss */
 .l-page {
   max-width: 1024;
   margin-left: auto;
@@ -8455,20 +8466,20 @@ header #bookmarkme {
   display: block;
   clear: both;
 }
-/* line 32, ../sass/layout/_main.layout.scss */
+/* line 38, ../sass/layout/_main.layout.scss */
 .l-page .l-sidebar {
   width: 23.72881%;
   float: left;
   margin-right: 1.69492%;
 }
-/* line 36, ../sass/layout/_main.layout.scss */
+/* line 42, ../sass/layout/_main.layout.scss */
 .l-page .l-editors {
   width: 74.57627%;
   float: right;
   margin-right: 0;
 }
 
-/* line 41, ../sass/layout/_main.layout.scss */
+/* line 47, ../sass/layout/_main.layout.scss */
 .l-actions {
   *zoom: 1;
 }
@@ -8479,13 +8490,13 @@ header #bookmarkme {
   clear: both;
 }
 
-/* line 48, ../sass/layout/_main.layout.scss */
+/* line 54, ../sass/layout/_main.layout.scss */
 .l-buttons {
   border-bottom: 1px solid #444b4f;
   padding-bottom: 10px;
 }
 
-/* line 54, ../sass/layout/_main.layout.scss */
+/* line 60, ../sass/layout/_main.layout.scss */
 .l-editors {
   *zoom: 1;
 }
@@ -8496,20 +8507,20 @@ header #bookmarkme {
   clear: both;
 }
 
-/* line 58, ../sass/layout/_main.layout.scss */
+/* line 64, ../sass/layout/_main.layout.scss */
 .l-container {
   width: 98%;
   margin: 0 auto;
   max-width: 1024px;
 }
 
-/* line 65, ../sass/layout/_main.layout.scss */
+/* line 71, ../sass/layout/_main.layout.scss */
 .html-wrapper, .css-wrapper {
   float: left;
   width: 100%;
   margin-top: 15px;
 }
-/* line 71, ../sass/layout/_main.layout.scss */
+/* line 77, ../sass/layout/_main.layout.scss */
 .html-wrapper h3, .css-wrapper h3 {
   display: inline-block;
   margin-bottom: 0;
@@ -8519,44 +8530,67 @@ header #bookmarkme {
   vertical-align: middle;
   text-transform: uppercase;
 }
-/* line 85, ../sass/layout/_main.layout.scss */
+/* line 91, ../sass/layout/_main.layout.scss */
+.html-wrapper .html-status, .css-wrapper .html-status {
+  margin-left: 225px;
+}
+/* line 95, ../sass/layout/_main.layout.scss */
 .html-wrapper .e-html-paste, .html-wrapper .e-css-copy, .css-wrapper .e-html-paste, .css-wrapper .e-css-copy {
   vertical-align: bottom;
 }
-/* line 89, ../sass/layout/_main.layout.scss */
+/* line 99, ../sass/layout/_main.layout.scss */
 .html-wrapper #html-editor, .html-wrapper #css-editor, .css-wrapper #html-editor, .css-wrapper #css-editor {
   margin-top: 8px;
 }
-/* line 93, ../sass/layout/_main.layout.scss */
+/* line 103, ../sass/layout/_main.layout.scss */
 .html-wrapper .btn, .css-wrapper .btn {
   vertical-align: middle;
 }
 
-/* line 101, ../sass/layout/_main.layout.scss */
+/* line 111, ../sass/layout/_main.layout.scss */
 .html-wrapper .e-html-paste {
   display: inline-block;
   margin-left: 20px;
 }
 
-/* line 108, ../sass/layout/_main.layout.scss */
+/* line 118, ../sass/layout/_main.layout.scss */
 #html-editor {
   height: 250px;
   border: 1px solid #ccc;
 }
 
-/* line 117, ../sass/layout/_main.layout.scss */
+/* line 127, ../sass/layout/_main.layout.scss */
 .css-wrapper .e-css-copy {
   display: inline-block;
   margin-left: 20px;
 }
 
-/* line 123, ../sass/layout/_main.layout.scss */
+/* line 133, ../sass/layout/_main.layout.scss */
 #css-editor {
   height: 250px;
   border: 1px solid #ccc;
 }
 
-/* line 128, ../sass/layout/_main.layout.scss */
+/* line 139, ../sass/layout/_main.layout.scss */
+#css-editor, .chosen-container {
+  -webkit-transition: all 0.22s ease-in-out;
+  -moz-transition: all 0.22s ease-in-out;
+  -ms-transition: all 0.22s ease-in-out;
+  -o-transition: all 0.22s ease-in-out;
+  box-shadow: none;
+  border: auto;
+}
+/* line 147, ../sass/layout/_main.layout.scss */
+#css-editor.updated, .chosen-container.updated {
+  box-shadow: 0 0 10px #00a2d1;
+  border: 1px solid #51cbee;
+  -webkit-transition: all 0.22s ease-in-out;
+  -moz-transition: all 0.22s ease-in-out;
+  -ms-transition: all 0.22s ease-in-out;
+  -o-transition: all 0.22s ease-in-out;
+}
+
+/* line 157, ../sass/layout/_main.layout.scss */
 footer {
   *zoom: 1;
   margin-top: 70px;
