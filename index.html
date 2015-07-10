@@ -46,8 +46,11 @@
 				<div class="timer" data-seconds-left="3"></div>
 			</header>
 			
-			<div class="l-buttons">			
-				<button class="btn btn-success e-generate-base">Generate Base</button>				
+			<div class="l-buttons">		
+				<div class="btn-group e-modes">	
+					<button class="btn btn-success e-generate-full active">Full</button>
+					<button class="btn btn-success e-generate-base">Base</button>
+				</div>
 			</div>
 
 			<div class="l-page">
@@ -144,7 +147,7 @@
 					<div class="css-wrapper">
 						<h3>Styles</h3>
 						<a href="#" id="e-copy" class="btn btn-success e-css-copy">Copy</a>
-						<div class="btn-group">
+						<div class="btn-group e-css-sass">
 						<button class="btn btn-info e-generate-css">CSS</button>
 						<button class="btn btn-info active e-generate-sass">SCSS/LESS</button>		
 						</div>

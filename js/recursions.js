@@ -10,15 +10,17 @@ function generateStyles() {
 
 	var strHtml = htmlEditor.session.getValue();
 	var result = '';
-	var activeBtn = $('.btn-group .active');
+	var activeBtn = $('.e-css-sass .active');
 	if (activeBtn.hasClass('e-generate-sass')) {
 		//
 		result = sassRecurse($(strHtml));
 		result = result.trim();
+		// clean space defects
 		result = result.replace(/[\n]{3}/g,'\n\n');
 	} else if (activeBtn.hasClass('e-generate-css')) {
 		//
 		result = cssRecurse($(strHtml));
+		result = result.replace(/[  ]{2}/g,' ');
 		result = result.trim();
 	}	
 
@@ -26,6 +28,45 @@ function generateStyles() {
 
 	$('#e-css_input').val(result);				
 	cssEditor.session.setValue(result);	
+}
+
+function baseTagsRecurse($item) {
+	var tags = [];
+	var siblingTracker = [];
+    $item.each(function() {  	        
+        var element = $(this);               
+
+
+        if ($.inArray(element.tagNameLowerCase(), getSystemTags()) !== -1) {
+        	return [];
+        }
+
+        var tagName = element.tagNameLowerCase();        
+        if (tagName == 'input') {
+        	tagName = tagName + '[type=' + element.attr('type') + ']';
+        }
+
+        if (tagName != undefined && tagName != '') {        	        	
+        	if (!tags.length) {
+        		tags = $.merge([], [tagName]);
+        	} else {
+        		tags = $.merge(tags, [tagName]);
+        	}        	
+        }
+                
+        // if element has children - start resursion	        
+        if ( element.children().length > 0 ) {	
+        	if (!tags.length) {
+        		tags = $.merge([], baseTagsRecurse(element.children()));
+        	} else {
+        		tags = $.merge(tags, baseTagsRecurse(element.children()));	
+        	}        	        	
+        } 	    
+        
+	   	// ' { \n\n}\n\n';
+    });  
+
+    return tags;
 }
 
 function classesRecurse($item) {  		
@@ -117,7 +158,7 @@ function sassRecurse($item) {
         	return '';
         }	         
         // get class, id or tag name of current element
-        var sassEl = getSassData(element);	        
+        var sassEl = getSassData(element).trim();	        
         
         // elements should not be repeated within same level
         // sassEl == '' means empty selector (RawTags = RemoveAll)
@@ -127,33 +168,77 @@ function sassRecurse($item) {
 	        siblingTracker[siblingTracker.length] = sassEl;		
 	        // get no Raw parents number to set indent per each element	        
 	        var parentsCount = 0;
-	        // if RawTags = show_all - count all tags
+	        	        
+
+	        // if RawTags = show_all - count all tags	       
 	        if (settings.rawTags == 'show_all') {
-	        	parentsCount = element.parents().length + 1;	        
+	        	// excluded tags setup in the form ??
+	        	if ($('#excluded_tags').val() !== null) {
+	        		parentsCount = element.noExcludedParentsLength() + 1;		        	
+		        	if (element.isExcludedTag()) {
+			        	if (element.children().length > 0 && 
+			        		(element.tagNameLowerCase() != 'ul' &&
+			        		 element.tagNameLowerCase() != 'table' )) {		        		
+			        		return result += sassRecurse(element.children());
+			        	} 
+			        	// remove raw tag
+			        	else {	        				        		
+			        		return '';
+			        	}
+			        }
+	        	} else {
+	        		parentsCount = element.parents().length + 1;	        	
+	        	}	        	
 	        } 
 	        // otherwise - only non-raw Tags
 	        else {	        	
-		        parentsCount = element.noRawParentslength() + 1;	        
-		        // if rawTags is in remove All state and tag is raw...
-		        if (settings.rawTags == 'remove_all' && element.isRawTag()) {
-		        	// remove and digging deep to find children..
-		        	if (element.children().length > 0) {		        		
-		        		return result += sassRecurse(element.children());
-		        	} 
-		        	// remove raw tag
-		        	else {	        				        		
-		        		return '';
-		        	}	      
-		        }	  
+	        	if ($('#excluded_tags').val() !== null) {
+	        		parentsCount = element.noRawExcludedParentsLength() + 1;		        	
+		        	if (element.isExcludedTag() || element.isRawTag()) {		        		
+			        	if (element.children().length > 0 && 
+			        		(element.tagNameLowerCase() != 'ul' &&
+			        		 element.tagNameLowerCase() != 'table' )) {		        		
+			        		return result += sassRecurse(element.children());
+			        	} 
+			        	// remove raw tag
+			        	else {	        				        		
+			        		return '';
+			        	}
+			        }
+	        	} else {
+
+			        parentsCount = element.noRawParentsLength() + 1;        			       
+			        // if rawTags is in remove All state and tag is raw...
+			        if (element.isRawTag()) {
+			        	// remove and digging deep to find children..
+			        	if (element.children().length > 0) {		        		
+			        		return result += sassRecurse(element.children());
+			        	} 
+			        	// remove raw tag
+			        	else {	        				        		
+			        		return '';
+			        	}	      
+			        }	  
+		    	}
 		    }
+
+		    //console.log(element.tagNameLowerCase());
+		    //console.log($('#excluded_tags').val());
+		    		    
+		    //if ($.inArray(element.tagNameLowerCase(), $('#excluded_tags').val()) !== -1) {
+	        //	return result += sassRecurse(element.children());
+	        //}
+	        
+
+
 	        // indent = tab space
 	        var indent = Array(parentsCount).join('\t');	        
 
-	        if (element.children().length > 0) {		    	
-		    	result += '\n\n' + indent + sassEl + ' { \n' + sassRecurse(element.children()) + '\n' + indent + '}';
+	        if (element.children().length > 0) {		    		        	
+        		result += '\n\n' + indent + sassEl + ' { \n' + sassRecurse(element.children()) + '\n' + indent + '}';		    	
 		    } 
 		    // empty element = text - skip it
-		    else if (sassEl != '') {	        	
+		    else if (sassEl != '') {			    	
 		    	result += '\n\n' + indent  + sassEl + ' { \n\n' + indent + '}';
 		    }
 	    }		    
@@ -164,46 +249,6 @@ function sassRecurse($item) {
 
     return result;
 }
-
-/*
-function sassRecurse($item) {  //sassNotRawRecurse	
-	console.log('Any');
-	var result = '';
-	var siblingTracker = [];
-    $item.each(function() { 	    	
-        var element = $(this);
-
-        // skip system tags (link, script, title etc)
-        if ($.inArray(element.tagNameLowerCase(), getSystemTags()) !== -1) {
-        	return '';
-        }	         
-        // get class, id or tag name of current element
-        var sassEl = getSassData(element);	        
-        // elements should not be repeated within same level
-        if ($.inArray(sassEl, siblingTracker) === -1) {
-        	// add current element to sibling tracker if it's not there so far
-	        siblingTracker[siblingTracker.length] = sassEl;		
-	        // get parents number to set indent per each element
-	        var parentsCount = element.parents().length + 1;
-	        // indent = tab space
-	        var indent = Array(parentsCount).join('\t');	        	        	        
-	        // if tag is placeholder's type -- like 'select'
-	        if ($.inArray(element.tagNameLowerCase(), getPlaceholderTags()) !== -1) {
-	        	result += '\n' + indent + sassEl + ' { \n\n' + sassRecurse(element.children()) + indent + '}\n\n';
-	        // if element has children - start resursion
-	        } else if ( element.children().length > 0 ) {	        	
-	        	result += '\n' + indent + sassEl + ' { \n' + sassRecurse(element.children()) + indent + '}\n';
-	        } 
-	        // empty element = text - skip it
-	        else if (sassEl != '') {	        	
-	        	result += '\n' + indent  + sassEl + ' { \n\n' + indent + '}\n';
-	        }
-	    }		    
-    });  
-
-    return result;  
-}
-*/
 
 function cssRecurse($item) {  	
 	var result = '';
@@ -216,23 +261,64 @@ function cssRecurse($item) {
         }
         var cssEl = getCssData(element).trim();	  	        
         var indent = '';
+        var parentsCount;
         // elements should not be repeated within same level
         // sassEl == '' means empty selector (RawTags = RemoveAll)
         if ($.inArray(cssEl, siblingTracker) === -1 || cssEl == '') {
         	// add current element to sibling tracker if it's not there so far
 	        siblingTracker[siblingTracker.length] = cssEl;
 
-	        // if rawTags is in remove All state and tag is raw...
-	        if (settings.rawTags == 'remove_all' && element.isRawTag()) {
-	        	// remove and digging deep to find children..
-	        	if (element.children().length > 0) {	        			        	
-	        		return result += cssRecurse(element.children());
-	        	} 
-	        	// remove raw tag
-	        	else {	        		
-	        		return '';
-	        	}	      
-	        }
+	        // if RawTags = show_all - count all tags	       
+	        if (settings.rawTags == 'show_all') {
+	        	// excluded tags setup in the form ??
+	        	if ($('#excluded_tags').val() !== null) {
+	        		parentsCount = element.noExcludedParentsLength() + 1;		        	
+		        	if (element.isExcludedTag()) {
+			        	if (element.children().length > 0 && 
+			        		(element.tagNameLowerCase() != 'ul' &&
+			        		 element.tagNameLowerCase() != 'table' )) {		        		
+			        		return result += cssRecurse(element.children());
+			        	} 
+			        	// remove raw tag
+			        	else {	        				        		
+			        		return '';
+			        	}
+			        }
+	        	} else {
+	        		parentsCount = element.parents().length + 1;	        	
+	        	}	        	
+	        } 
+	        // otherwise - only non-raw Tags
+	        else {	        	
+	        	if ($('#excluded_tags').val() !== null) {
+	        		parentsCount = element.noRawExcludedParentsLength() + 1;		        	
+		        	if (element.isExcludedTag() || element.isRawTag()) {		        		
+			        	if (element.children().length > 0 && 
+			        		(element.tagNameLowerCase() != 'ul' &&
+			        		 element.tagNameLowerCase() != 'table' )) {		        		
+			        		return result += cssRecurse(element.children());
+			        	} 
+			        	// remove raw tag
+			        	else {	        				        		
+			        		return '';
+			        	}
+			        }
+	        	} else {
+
+			        parentsCount = element.noRawParentsLength() + 1;        			       
+			        // if rawTags is in remove All state and tag is raw...
+			        if (element.isRawTag()) {
+			        	// remove and digging deep to find children..
+			        	if (element.children().length > 0) {		        		
+			        		return result += cssRecurse(element.children());
+			        	} 
+			        	// remove raw tag
+			        	else {	        				        		
+			        		return '';
+			        	}	      
+			        }	  
+		    	}
+		    }
 	        
 	        if ( element.children().length > 0 ) {	        	
 	        	result += cssEl + ' { \n\n}\n\n';
@@ -401,6 +487,29 @@ function getIdsFromHtml() {
 	return ids;
 }
 
+function getTagsFromHtml() {
+	var htmlEditor = ace.edit("html-editor");
+	var text = htmlEditor.session.getValue();
+	var tags = baseTagsRecurse($(text));
+	$.unique(tags);
+	tags.sort();	
+
+	//tags.splice($.inArray('li', tags), 1);
+	var excludedBaseTags = ['li', 'tr', 'th', 'td', 'thead', 'tbody', 'tfoot'];
+	var excludedTagsFieldValue = $('#excluded_tags').val();
+	if (excludedTagsFieldValue !== null) {
+		excludedBaseTags = $.merge(excludedTagsFieldValue, excludedBaseTags);
+	}
+	
+	for (var i=0; i < excludedBaseTags.length; i++) {
+		if ($.inArray(excludedBaseTags[i], tags) !== -1) {
+			tags.splice($.inArray(excludedBaseTags[i], tags), 1);
+		}
+	}
+		
+	return tags;
+}
+
 function updateExcludedClasses() {
 	var items = getClassesFromHtml();
 	var field_select = $('#excluded_classes');	
@@ -448,12 +557,36 @@ function updateExcludedIds() {
 	});
 }
 
+function updateExcludedTags() {
+	var items = getTagsFromHtml(true);	
+	var field_select = $('#excluded_tags');
+	var selected_items = field_select.val();
+
+	field_select.html('');
+	$.each(items, function (i, className) {
+		if ($.inArray(className, selected_items) !== -1) {
+			field_select.append($('<option>', { 
+		        value: className,
+		        text : className,
+		        selected : 'selected'
+		    }));
+		} else {
+			field_select.append($('<option>', { 
+		        value: className,
+		        text : className 
+		    }));
+		}	    
+	});
+}
+
 function updateExclusionsFields() {
 	updateExcludedClasses();  
 	updateExcludedIds();
+	updateExcludedTags();
 	setTimeout(function() {
 		$('#excluded_classes').trigger("chosen:updated");
 		$('#excluded_ids').trigger("chosen:updated");
+		$('#excluded_tags').trigger("chosen:updated");
 	}, 50);	
 }
 
@@ -471,8 +604,11 @@ function elementBlink(element) {
 jQuery.fn.tagNameLowerCase = function() {
 	var el = this;
 	var tag = this.prop("tagName");
-	if (tag != undefined) {
+	if (tag != undefined) {		
     	tag = tag.toLowerCase();
+    	if (tag == 'input' && $(this).attr('type') != '') {
+			tag = tag + '[type=' + $(this).attr('type') + ']';
+		}
     }
 	return tag;
 }
@@ -518,10 +654,14 @@ jQuery.fn.isRawTag = function() {
 	return false;
 }	
 
+jQuery.fn.isExcludedTag = function() {
+	return $.inArray($(this).tagNameLowerCase(), $('#excluded_tags').val()) !== -1;
+}
+
 /*
  * Get number of No Raw Parents tags
  */
-jQuery.fn.noRawParentslength = function() {
+jQuery.fn.noRawParentsLength = function() {
 	var element = $(this);
 	var parents = element.parents();
 	var count = 0;
@@ -534,6 +674,31 @@ jQuery.fn.noRawParentslength = function() {
 	return count;
 }
 
+jQuery.fn.noExcludedParentsLength = function() {
+	var element = $(this);
+	var parents = element.parents();
+	var count = 0;	
+	$.each(parents, function(index, parent) {			
+		if (!$(parent).isExcludedTag()) {
+			count++;
+		}
+	});	
+
+	return count;
+}
+
+jQuery.fn.noRawExcludedParentsLength = function() {
+	var element = $(this);
+	var parents = element.parents();
+	var count = 0;	
+	$.each(parents, function(index, parent) {			
+		if (!$(parent).isExcludedTag() && !$(parent).isRawTag()) {
+			count++;
+		}
+	});	
+
+	return count;
+}
 /*
  * Get number of No Raw Children tags
  */
@@ -541,11 +706,7 @@ jQuery.fn.rawTailChildrenLength = function() {
 	var element = $(this);
 	var children = element.children();
 	var count = 0;
-	$.each(children, function(index, child) {	
-		console.log('r:');
-		console.log($(child).isRawTag());
-		console.log('ch:');
-		console.log($(child).children().length);
+	$.each(children, function(index, child) {			
 		if ($(child).isRawTag() && !$(child).children().length) {
 			count++;
 		}
@@ -553,6 +714,14 @@ jQuery.fn.rawTailChildrenLength = function() {
 
 	return count;
 }
+
+$.arrayIntersect = function(a, b)
+{
+    return $.grep(a, function(i)
+    {
+        return $.inArray(i, b) > -1;
+    });
+};
 
 /**
  * List of tags that should be excluded from CSS

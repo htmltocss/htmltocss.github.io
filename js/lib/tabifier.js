@@ -156,7 +156,7 @@ function cleanTag(tag) {
 /////////////// but are declared global so that they are read only once
 //opening and closing tag on it's own line but no new indentation level
 var ownLine=['area', 'body', 'head', 'hr', 'i?frame', 'link', 'meta',
-  'noscript', 'style', 'table', 'tbody', 'thead', 'tfoot'];
+  'noscript', 'style'];
 
 //opening tag, contents, and closing tag get their own line
 //(i.e. line before opening, after closing)
@@ -174,7 +174,7 @@ lineAfter=new RegExp(
 
 //inside these tags (close tag expected) a new indentation level is created
 var newLevel=['blockquote', 'div', 'dl', 'fieldset', 'form', 'frameset',
-  'map', 'ol', 'p', 'pre', 'select', 'td', 'th', 'tr', 'ul'];
+  'map', 'ol', 'p', 'pre', 'select', 'td', 'th', 'tr', 'ul', 'table', 'tbody', 'thead','tfoot'];
 newLevel=new RegExp('^</?('+newLevel.join('|')+')[ >]');
 function placeTag(tag, out) {
   var nl=tag.match(newLevel);

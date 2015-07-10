@@ -8533,45 +8533,46 @@ header #bookmarkme {
 /* line 91, ../sass/layout/_main.layout.scss */
 .html-wrapper .html-status, .css-wrapper .html-status {
   margin-left: 225px;
+  color: #444b4f;
 }
-/* line 95, ../sass/layout/_main.layout.scss */
+/* line 97, ../sass/layout/_main.layout.scss */
 .html-wrapper .e-html-paste, .html-wrapper .e-css-copy, .css-wrapper .e-html-paste, .css-wrapper .e-css-copy {
   vertical-align: bottom;
 }
-/* line 99, ../sass/layout/_main.layout.scss */
+/* line 101, ../sass/layout/_main.layout.scss */
 .html-wrapper #html-editor, .html-wrapper #css-editor, .css-wrapper #html-editor, .css-wrapper #css-editor {
   margin-top: 8px;
 }
-/* line 103, ../sass/layout/_main.layout.scss */
+/* line 105, ../sass/layout/_main.layout.scss */
 .html-wrapper .btn, .css-wrapper .btn {
   vertical-align: middle;
 }
 
-/* line 111, ../sass/layout/_main.layout.scss */
+/* line 113, ../sass/layout/_main.layout.scss */
 .html-wrapper .e-html-paste {
   display: inline-block;
   margin-left: 20px;
 }
 
-/* line 118, ../sass/layout/_main.layout.scss */
+/* line 120, ../sass/layout/_main.layout.scss */
 #html-editor {
   height: 250px;
   border: 1px solid #ccc;
 }
 
-/* line 127, ../sass/layout/_main.layout.scss */
+/* line 129, ../sass/layout/_main.layout.scss */
 .css-wrapper .e-css-copy {
   display: inline-block;
   margin-left: 20px;
 }
 
-/* line 133, ../sass/layout/_main.layout.scss */
+/* line 135, ../sass/layout/_main.layout.scss */
 #css-editor {
   height: 250px;
   border: 1px solid #ccc;
 }
 
-/* line 139, ../sass/layout/_main.layout.scss */
+/* line 141, ../sass/layout/_main.layout.scss */
 #html-editor, #css-editor, .chosen-container {
   -webkit-transition: all 0.22s ease-in-out;
   -moz-transition: all 0.22s ease-in-out;
@@ -8580,7 +8581,7 @@ header #bookmarkme {
   box-shadow: none;
   border: auto;
 }
-/* line 147, ../sass/layout/_main.layout.scss */
+/* line 149, ../sass/layout/_main.layout.scss */
 #html-editor.updated, #css-editor.updated, .chosen-container.updated {
   box-shadow: 0 0 10px #00a2d1;
   border: 1px solid #51cbee;
@@ -8590,7 +8591,7 @@ header #bookmarkme {
   -o-transition: all 0.22s ease-in-out;
 }
 
-/* line 157, ../sass/layout/_main.layout.scss */
+/* line 159, ../sass/layout/_main.layout.scss */
 footer {
   *zoom: 1;
   margin-top: 70px;
