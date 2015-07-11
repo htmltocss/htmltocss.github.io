@@ -92,6 +92,7 @@ $(function() {
 		// Editor - Редактор : Свои API
 		// Session - Сессия : Cвои API	 
 		var text = '<div class="parent"><label>Title</label><div><a id="ssss" class="fff ccc lll" href="#">aaa</a></div></div>';		
+		cleanHTML(text);
 		//var text = '<div class="   first my-class last" id="my-id"><a id="ssss" class="fff ccc lll" href="#">aaa</a></div>\n<div class="first my-class-2 center-1 center-2 last-2">\n\tHello\n</div>';
 		/*+'<select size="3" multiple name="hero[]">'
     	+'<option disabled>Choose your hero</option>'
@@ -117,9 +118,20 @@ $(function() {
 
 
 
-	    htmlEditor.on('paste', function() {	    	
-	    	//generateStyles();
+	    htmlEditor.on('change', function(e) {	  
+	    	//var htmlEditor = ace.edit("html-editor");
+			//var code = htmlEditor.session.getValue();  	
+	    	//cleanHTML(e.text);
+	    	if (!htmlEditor.curOp || !htmlEditor.curOp.command.name) {
+	    		console.log(e.data.text);	    		
+	    		if (e.data.text != undefined && e.data.text != '') {
+	    			//cleanHTML(e.data.text);
+	    		}
+	    	} else {
+	    		//console.log("user change");
+	    	}		    	
 	    });
+
 	    htmlEditor.on('input', function() {	
 	    	$('.html-status').text('Updating styles...');    	
 	    	if (timer.isActive) {
@@ -129,7 +141,7 @@ $(function() {
 		        timer.play();
 		    }  
 	    });
-		htmlEditor.session.setValue(text);
+		//htmlEditor.session.setValue(text);
 		//updateExcludedClasses();
 		//updateExcludedIds();
 		updateExclusionsFields();
