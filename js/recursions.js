@@ -1,6 +1,121 @@
 'use strict';
 
-function generateStyles() {
+function generateBaseStyles() {
+	var htmlEditor = ace.edit("html-editor");
+	var cssEditor = ace.edit("css-editor");
+	var strHtml = htmlEditor.session.getValue();
+	//var tags = baseTagsRecurse($(strHtml));		
+	var tags = getTagsFromHtml();
+	var formTag = 'form';
+	var formSelector = '';
+	var inputTags = [
+					 'label',
+					 'select',
+					 'button',
+					 'textarea',
+					 'input[type=text]',
+					 'input[type=password]',
+					 'input[type=checkbox]',
+					 'input[type=submit]',
+					 'input[type=radio]',
+					 'input[type=hidden]'
+					 ];
+	var inputSelector = '';
+	var listTag = 'ul';
+	var listSelector = '';
+	var tableTag = 'table';
+	var tableSelector = '';				
+
+	var activeBtn = $('.e-css-sass .active');
+
+	// FORM, INPUTS present
+	var formIndex = $.inArray(formTag, tags);
+	if (formIndex !== -1) {
+		// remove item from array
+		tags.splice(formIndex, 1);			
+							
+		var inputCurrentTags = $.arrayIntersect(inputTags, tags);
+
+		// start form selector
+		formSelector = formTag + ' { \n\n';
+		// rules of open-closing brackets are different for css and scss
+		formSelector += activeBtn.hasClass('e-generate-sass') ? '' : '}\n\n';
+		// go through all presented Input tags
+		for (var i=0; i<inputCurrentTags.length; i++) {
+			var inputIndex = $.inArray(inputCurrentTags[i], tags);
+			//if (inputIndex !== -1) {
+				tags.splice(inputIndex, 1);
+				if (activeBtn.hasClass('e-generate-sass')) {
+					formSelector += '\t' + inputCurrentTags[i] + ' { \n\n\t}';	
+					formSelector += (i == inputCurrentTags.length - 1) ? '\n' : '\n\n';
+				} else {
+					formSelector += formTag + ' ' + inputCurrentTags[i] + ' { \n\n}';
+					formSelector += (i == inputCurrentTags.length - 1) ? '\n' : '\n\n';
+				}					
+			//}					
+		}				
+		formSelector += activeBtn.hasClass('e-generate-sass') ? '}\n\n' : '\n';
+	}
+	
+	// UL LI present
+	var listIndex = $.inArray(listTag, tags);
+	if (listIndex !== -1) {
+		// remove item from array
+		tags.splice($.inArray('ul', tags), 1);			
+		
+		// check if OL tag exists...
+		if ($.inArray('ol', tags) !== -1) {
+			// add ol tag
+			listTag += ', ol';
+			tags.splice($.inArray('ol', tags), 1);
+		}			
+		// common piece for css/scss
+		listSelector = listTag + ' { \n\n';
+		// rules of open-closing brackets are different for css and scss
+		listSelector += activeBtn.hasClass('e-generate-sass') ? '' : '}\n\n';			
+		if (activeBtn.hasClass('e-generate-sass')) {
+			listSelector += '\tli { \n\n\t}\n';	
+		} else {
+			listSelector += listTag + ' li { \n\n}\n\n';
+		}
+		listSelector += activeBtn.hasClass('e-generate-sass') ? '}\n\n' : '';
+	}
+
+	// TABLE present
+	var tableIndex = $.inArray(tableTag, tags);
+	if (tableIndex !== -1) {
+		// remove item from array
+		tags.splice(tableIndex, 1);			
+
+		// common piece for css/scss
+		tableSelector = tableTag + ' { \n\n';
+		// rules of open-closing brackets are different for css and scss
+		tableSelector += activeBtn.hasClass('e-generate-sass') ? '' : '}\n\n';			
+		if (activeBtn.hasClass('e-generate-sass')) {
+			tableSelector += '\ttr { \n\n';
+			tableSelector += '\t\tth { \n\n\t\t}\n\n';
+			tableSelector += '\t\ttd { \n\n\t\t}\n';
+			tableSelector += '\t}\n';	
+		} else {
+			tableSelector += tableTag + ' tr { \n\n}\n\n';
+			tableSelector += tableTag + ' tr th, table tr td { \n\n}\n\n';
+		}
+		tableSelector += activeBtn.hasClass('e-generate-sass') ? '}\n\n' : '';
+	}
+	var stylesStr = '';
+	if (tags.length > 0) {
+		stylesStr = tags.join(' { \n\n}\n\n') + ' { \n\n}\n\n';
+	}
+	stylesStr += formSelector + listSelector + tableSelector;
+	// clean space defects
+	stylesStr = stylesStr.replace(/[\n]{3}/g,'\n\n');
+
+	cssEditor.session.setValue(stylesStr);
+
+	elementBlink($('#css-editor'));
+}
+
+function generateFullStyles() {
 	// get updates from input form and put it 
 	// into global variable
 	updateSettings();
@@ -28,6 +143,21 @@ function generateStyles() {
 
 	$('#e-css_input').val(result);				
 	cssEditor.session.setValue(result);	
+}
+
+function generateStyles() {
+	if ($('.e-modes .active').hasClass('e-generate-full')) {		
+		generateFullStyles();
+		$('input[type=radio]').prop('disabled', false);
+		$('#excluded_classes').prop('disabled', false).trigger("chosen:updated");
+		$('#excluded_ids').prop('disabled', false).trigger("chosen:updated");
+	} else if ($('.e-modes .active').hasClass('e-generate-base')) {
+		generateBaseStyles();
+		$('input[type=radio]').prop('disabled', true);
+		$('#excluded_classes').prop('disabled', true).trigger("chosen:updated");
+		$('#excluded_ids').prop('disabled', true).trigger("chosen:updated");
+		
+	}
 }
 
 function baseTagsRecurse($item) {
@@ -380,6 +510,11 @@ function parseSassElement(element) {
 			selectorName = element.attr('id');
 			selectorPrefix = '#';
 
+			// show tag name if visibility is sent correctly
+			if (settings.tagNameVisibility == 'all' || 
+				settings.tagNameVisibility == 'id') {
+				return tag + selectorPrefix + selectorName;
+			}
 			return selectorPrefix + selectorName;			
 		} else if (hasClasses) {
 			selectorPrefix = '.';						
@@ -391,8 +526,15 @@ function parseSassElement(element) {
 			}
 			selectorName = classesLine.split(' ')[classPriorityIndex];			
 
+			// show tag name if visibility is sent correctly
+			if (settings.tagNameVisibility == 'all' || 
+				settings.tagNameVisibility == 'classes') {
+				return tag + selectorPrefix + selectorName;
+			}
 			return selectorPrefix + selectorName;
-		}  
+		}
+
+		// if element has no classes/id
 		if (settings.rawTags == 'show_all') {
 			// use only tag for elements that has no classes or ids
 			return tag;

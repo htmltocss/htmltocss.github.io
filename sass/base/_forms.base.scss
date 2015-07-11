@@ -30,13 +30,25 @@
 			.radio-item { 
 				line-height: 10px;
 
-				#sel_priority-class { 
+				input[type=radio] {					
+					&~label {
+						-webkit-transition: all 0.22s ease-in-out;
+						-moz-transition: all 0.22s ease-in-out;
+						-ms-transition: all 0.22s ease-in-out;
+						-o-transition: all 0.22s ease-in-out;
+					}
 
-				}
+					&:disabled {												
 
-				label { 
-
-				}
+						&~label {
+							color: #cccccc;
+							-webkit-transition: all 0.22s ease-in-out;
+							-moz-transition: all 0.22s ease-in-out;
+							-ms-transition: all 0.22s ease-in-out;
+							-o-transition: all 0.22s ease-in-out;
+						}
+					}
+				}				
 			}
 		}		
 	}

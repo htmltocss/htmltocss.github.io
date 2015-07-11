@@ -8392,11 +8392,26 @@ p {
 .advanced-settings-form .form-item .field .radio-item {
   line-height: 10px;
 }
-/* line 44, ../sass/base/_forms.base.scss */
+/* line 34, ../sass/base/_forms.base.scss */
+.advanced-settings-form .form-item .field .radio-item input[type=radio] ~ label {
+  -webkit-transition: all 0.22s ease-in-out;
+  -moz-transition: all 0.22s ease-in-out;
+  -ms-transition: all 0.22s ease-in-out;
+  -o-transition: all 0.22s ease-in-out;
+}
+/* line 43, ../sass/base/_forms.base.scss */
+.advanced-settings-form .form-item .field .radio-item input[type=radio]:disabled ~ label {
+  color: #cccccc;
+  -webkit-transition: all 0.22s ease-in-out;
+  -moz-transition: all 0.22s ease-in-out;
+  -ms-transition: all 0.22s ease-in-out;
+  -o-transition: all 0.22s ease-in-out;
+}
+/* line 63, ../sass/base/_forms.base.scss */
 .advanced-settings-form .form-select {
   padding-bottom: 15px;
 }
-/* line 48, ../sass/base/_forms.base.scss */
+/* line 67, ../sass/base/_forms.base.scss */
 .advanced-settings-form #excluded_classes, .advanced-settings-form #excluded_ids, .advanced-settings-form #excluded_tags {
   width: 100%;
 }

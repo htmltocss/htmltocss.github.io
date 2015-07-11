@@ -58,6 +58,27 @@
 					<fieldset class="advanced-settings">
 						<form class="advanced-settings-form">						
 							<div class="form-item radio-buttons">
+								<label>Selector Tag Name</label>
+								<div class="field">
+									<div class="radio-item">
+										<input type="radio" name="sel_tag_name" id="sel_tag_name-raw" value="raw" checked="checked">
+										<label for="sel_tag_name-raw">Raw Tags</label>
+									</div>
+									<div class="radio-item">
+										<input type="radio" name="sel_tag_name" id="sel_tag_name-id" value="id">
+										<label for="sel_tag_name-id">Tags with id</label>
+									</div>
+									<div class="radio-item">
+										<input type="radio" name="sel_tag_name" id="sel_tag_name-classes" value="classes">
+										<label for="sel_tag_name-classes">Tags with classes</label>
+									</div>
+									<div class="radio-item">
+										<input type="radio" name="sel_tag_name" id="sel_tag_name-all" value="all">
+										<label for="sel_tag_name-all">All Tags</label>
+									</div>									
+								</div>
+							</div>
+							<div class="form-item radio-buttons">
 								<label>Selector Priority</label>
 								<div class="field">
 									<div class="radio-item">
@@ -95,16 +116,7 @@
 									<div class="radio-item">
 										<input type="radio" name="raw_tags" id="raw_tags-remove-all" value="remove_all" checked="checked">
 										<label for="raw_tags-remove-all">Remove All</label>
-									</div>
-									<div class="radio-item">
-										<input type="radio" name="raw_tags" id="raw_tags-remove-all-root" value="remove_all_root" disabled>
-										<label for="raw_tags-remove-all-root">Remove All Root</label>
-									</div>
-
-									<div class="radio-item">
-										<input type="radio" name="raw_tags" id="raw_tags-show-tails" value="show_only_tails" disabled>
-										<label for="raw_tags-show-tails">Show Only Tails</label>
-									</div>
+									</div>									
 								</div>
 							</div>
 

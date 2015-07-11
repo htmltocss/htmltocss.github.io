@@ -3,10 +3,13 @@ var settings = {
 	selectorPriority: 'class',
 	excludedClasses: [],
 	excludedIds: [],
-	rawTags: 'show_all'
+	excludedTags: [],
+	rawTags: 'show_all',
+	tagNameVisibility: 'raw'
 };
 
 function updateSettings() {
+	settings.tagNameVisibility = $('input[name=sel_tag_name]:checked', '.advanced-settings-form').val();
 	settings.classPriority = $('input[name=class_order]:checked', '.advanced-settings-form').val();
 	settings.selectorPriority = $('input[name=sel_priority]:checked', '.advanced-settings-form').val();
 	
@@ -17,6 +20,10 @@ function updateSettings() {
 	var excludedIdsVal = $('select#excluded_ids', '.advanced-settings-form').val();
 	excludedIdsVal = excludedIdsVal != null ? excludedIdsVal : [];
 	settings.excludedIds = excludedIdsVal;
+
+	var excludedTagsVal = $('select#excluded_tags', '.advanced-settings-form').val();
+	excludedTagsVal = excludedTagsVal != null ? excludedTagsVal : [];
+	settings.excludedTags = excludedTagsVal;
 
 	settings.rawTags = $('input[name=raw_tags]:checked', '.advanced-settings-form').val();
 }
