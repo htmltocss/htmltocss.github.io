@@ -629,6 +629,24 @@ function getIdsFromHtml() {
 	return ids;
 }
 
+function getTagList($tag) {
+	var htmlEditor = ace.edit("html-editor");
+	var text = htmlEditor.session.getValue();
+	var container = $(text);
+	var elements = [];
+	var index = 1;
+	container.find($tag).each(function() {
+		var item = $(this);
+		if (item.attr('id') != undefined) {
+			elements.push('#' + item.attr('id'));
+		} else if (item.attr('class')) {
+			elements.push('#' + item.attr('class').split(' ')[0]);
+		} else {
+			index++;
+		}
+	});
+}
+
 function getTagsFromHtml() {
 	var htmlEditor = ace.edit("html-editor");
 	var text = htmlEditor.session.getValue();
@@ -721,7 +739,7 @@ function updateExcludedTags() {
 	});
 }
 
-function updateExclusionsFields() {
+function updateSettingsFields() {
 	updateExcludedClasses();  
 	updateExcludedIds();
 	updateExcludedTags();

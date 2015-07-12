@@ -34,6 +34,10 @@ $(function() {
 		$('.html-status').text('Tabs updating...'); 
 		
 		cleanHTML(code);	
+		setTimeout(function() {			
+			htmlEditor.session.setValue(settings.formattedHTML);	
+		}, 50);	
+
 		elementBlink($('#html-editor'));
 
 		$('.html-status').text('Tabs updated'); 
@@ -45,6 +49,9 @@ $(function() {
 		var htmlEditor = ace.edit("html-editor");
 		htmlEditor.selectAll();
 		htmlEditor.focus();
+		settings.prepareToPaste = true;
+
+		//getTagList('form');
 
 		return false;
 	});		
@@ -79,7 +86,7 @@ $(function() {
 		var cssEditor = ace.edit("css-editor");		
 		
 		timer = $.timer(function() {			
-        	updateExclusionsFields();
+        	updateSettingsFields();
         	generateStyles();
         	elementBlink($('.chosen-container'));
         	$('.html-status').text('Styles updated');
@@ -91,23 +98,19 @@ $(function() {
 
 		// Editor - Редактор : Свои API
 		// Session - Сессия : Cвои API	 
-		var text = '<div class="parent"><label>Title</label><div><a id="ssss" class="fff ccc lll" href="#">aaa</a></div></div>';		
+		var text = '<div class="parent"><label>Title</label><div><a id="ssss" class="fff ccc lll" href="#">aaa</a></div></div>';				
 		cleanHTML(text);
-		//var text = '<div class="   first my-class last" id="my-id"><a id="ssss" class="fff ccc lll" href="#">aaa</a></div>\n<div class="first my-class-2 center-1 center-2 last-2">\n\tHello\n</div>';
-		/*+'<select size="3" multiple name="hero[]">'
-    	+'<option disabled>Choose your hero</option>'
-    	+'<option value="dragon">Dragon</option>'
-    	+'<option selected value="gena">Gena</option>'
-    	+'<option value="zombie">Zombie</option>'
-   		+'</select>';*/
-   		//updateExcludedClasses();
-   		//updateExcludedIds();   		
-
+		
+		
+		setTimeout(function() {			
+			htmlEditor.session.setValue(settings.formattedHTML);	
+		}, 10);			
 
    		setTimeout(function() {
    			$('#excluded_classes').chosen({ allow_single_deselect:true });   			
    			$('#excluded_ids').chosen({ allow_single_deselect:true });
    			$('#excluded_tags').chosen({ allow_single_deselect:true });
+   			//$('#filter_forms').chosen({ allow_single_deselect:true });
    			// update Styles field after switching between "Chosen" fields
    			$('#excluded_classes, #excluded_ids, #excluded_tags').chosen().change(function() { 
    				generateStyles();    				
@@ -116,20 +119,13 @@ $(function() {
 
 	    var htmlEditor = ace.edit("html-editor");
 
-
-
-	    htmlEditor.on('change', function(e) {	  
-	    	//var htmlEditor = ace.edit("html-editor");
-			//var code = htmlEditor.session.getValue();  	
-	    	//cleanHTML(e.text);
-	    	if (!htmlEditor.curOp || !htmlEditor.curOp.command.name) {
-	    		console.log(e.data.text);	    		
-	    		if (e.data.text != undefined && e.data.text != '') {
-	    			//cleanHTML(e.data.text);
+	    htmlEditor.on('paste', function(e) {	
+	    	setTimeout(function() {
+	    		if (settings.prepareToPaste) {	    			
+	    			$(".e-format-html").trigger('click');
+	    			settings.prepareToPaste = false;
 	    		}
-	    	} else {
-	    		//console.log("user change");
-	    	}		    	
+	    	}, 100);	    	
 	    });
 
 	    htmlEditor.on('input', function() {	
@@ -140,11 +136,10 @@ $(function() {
 			} else {					
 		        timer.play();
 		    }  
-	    });
-		//htmlEditor.session.setValue(text);
-		//updateExcludedClasses();
-		//updateExcludedIds();
-		updateExclusionsFields();
+	    });		
+		
+		updateSettingsFields();
+	    
 	    htmlEditor.setTheme("ace/theme/chrome");
 	    htmlEditor.getSession().setMode("ace/mode/html");
 	    
@@ -152,15 +147,11 @@ $(function() {
 	    htmlEditor.selectAll();
 		htmlEditor.focus();
 
-
 	    var cssEditor = ace.edit("css-editor");
 	    cssEditor.setTheme("ace/theme/chrome");		        
 	    cssEditor.getSession().setTabSize(2);
 	    cssEditor.getSession().setMode("ace/mode/scss");
-
-	    //generateStyles();
 	}	
-
 	//
 	init();
 	

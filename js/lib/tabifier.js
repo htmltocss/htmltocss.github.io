@@ -18,8 +18,7 @@ function finishTabifier(code) {
   code=code.replace(/^[\s\n]*/, ''); //leading space
   code=code.replace(/[\s\n]*$/, ''); //trailing space
 
-  var htmlEditor = ace.edit("html-editor");
-  htmlEditor.session.setValue(code);
+  settings.formattedHTML = code;  
   //document.getElementById('o_code').value=code;
   level=0;
 

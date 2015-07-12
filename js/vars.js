@@ -1,11 +1,14 @@
 var settings = {
 	classPriority: 'first',
 	selectorPriority: 'class',
+	filterForms: [],
 	excludedClasses: [],
 	excludedIds: [],
-	excludedTags: [],
+	excludedTags: [],	
 	rawTags: 'show_all',
-	tagNameVisibility: 'raw'
+	tagNameVisibility: 'raw',
+	formattedHTML: '',
+	prepareToPaste: false
 };
 
 function updateSettings() {
@@ -13,6 +16,10 @@ function updateSettings() {
 	settings.classPriority = $('input[name=class_order]:checked', '.advanced-settings-form').val();
 	settings.selectorPriority = $('input[name=sel_priority]:checked', '.advanced-settings-form').val();
 	
+	var filterFormsVal = $('select#filter_forms').val();
+	filterFormsVal = filterFormsVal != null ? filterFormsVal : [];
+	settings.filterForms = filterFormsVal;
+
 	var excludedClassesVal = $('select#excluded_classes', '.advanced-settings-form').val();
 	excludedClassesVal = excludedClassesVal != null ? excludedClassesVal : [];
 	settings.excludedClasses = excludedClassesVal;

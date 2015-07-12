@@ -8407,13 +8407,25 @@ p {
   -ms-transition: all 0.22s ease-in-out;
   -o-transition: all 0.22s ease-in-out;
 }
-/* line 63, ../sass/base/_forms.base.scss */
+/* line 56, ../sass/base/_forms.base.scss */
 .advanced-settings-form .form-select {
   padding-bottom: 15px;
 }
-/* line 67, ../sass/base/_forms.base.scss */
+/* line 60, ../sass/base/_forms.base.scss */
 .advanced-settings-form #excluded_classes, .advanced-settings-form #excluded_ids, .advanced-settings-form #excluded_tags {
   width: 100%;
+}
+
+/* line 1, ../sass/base/_social.scss */
+.social {
+  float: right;
+  margin-top: 6px;
+  margin-right: 15px;
+  line-height: 10px;
+}
+/* line 9, ../sass/base/_social.scss */
+.social > div, .social > iframe {
+  margin-left: 15px;
 }
 
 /* line 2, ../sass/layout/_helper.layout.scss */

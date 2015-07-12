@@ -1,0 +1,12 @@
+.social {
+	float: right;
+  
+	margin-top: 6px;  
+	margin-right: 15px;
+
+	line-height: 10px;
+
+	&>div, &>iframe {
+		margin-left: 15px;
+	}
+}

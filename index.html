@@ -17,9 +17,8 @@
 		<script type="text/javascript" src="js/lib/chosen/chosen.jquery.min.js" charset="utf-8"></script>
 		<script type="text/javascript" src="js/lib/chosen/chosen.proto.min.js" charset="utf-8"></script>
 		<script type="text/javascript" src="js/lib/jquery.timer.js"></script>
-		<script type="text/javascript" src="js/lib/tabifier.js"></script>
-
 		<script type="text/javascript" src="js/vars.js"></script>
+		<script type="text/javascript" src="js/lib/tabifier.js"></script>		
 		<script type="text/javascript" src="js/recursions.js"></script>
 		<script type="text/javascript" src="js/common.js"></script>		
 		
@@ -32,11 +31,38 @@
 		  ga('create', 'UA-61394552-1', 'auto');
 		  ga('send', 'pageview');
 
-		</script>
-		<style>			
-	    </style>
+		</script>	
+		<script type="text/javascript" src="https://apis.google.com/js/plusone.js">
+    	</script>	
 	</head>
 	<body>
+
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=125586044121801";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+
+		<script>window.twttr = (function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0],
+		    t = window.twttr || {};
+		  if (d.getElementById(id)) return t;
+		  js = d.createElement(s);
+		  js.id = id;
+		  js.src = "https://platform.twitter.com/widgets.js";
+		  fjs.parentNode.insertBefore(js, fjs);
+		 
+		  t._e = [];
+		  t.ready = function(f) {
+		    t._e.push(f);
+		  };
+		 
+		  return t;
+		}(document, "script", "twitter-wjs"));</script>
+
 		<a href="https://github.com/htmltocss/htmltocss.github.io"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
 		<div class="l-container">
 			<header>
@@ -51,6 +77,16 @@
 					<button class="btn btn-success e-generate-full active">Full</button>
 					<button class="btn btn-success e-generate-base">Base</button>
 				</div>
+				<div class="social">
+					<g:plusone size="medium" align="right"></g:plusone>				
+					<div class="fb-share-button" data-href="http://htmltocss.github.io/" data-layout="button_count"></div>					
+					<a class="twitter-share-button"
+					  href="https://twitter.com/intent/tweet?url=http%3A%2F%2Fhtmltocss.github.io%2F"
+					  data-counturl="http://htmltocss.github.io/">
+					</a>					
+				
+				</div>
+				<select style="display:none;" name="filter_forms" id="filter_forms" data-placeholder=" ▽  Choose form" multiple></select>
 			</div>
 
 			<div class="l-page">
