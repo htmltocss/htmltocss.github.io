@@ -103,7 +103,9 @@ $(function() {
 		
 		
 		setTimeout(function() {			
-			htmlEditor.session.setValue(settings.formattedHTML);	
+			htmlEditor.session.setValue(settings.formattedHTML);
+
+			$("#e-select-all").trigger('click');	
 		}, 10);			
 
    		setTimeout(function() {
@@ -150,7 +152,7 @@ $(function() {
 	    var cssEditor = ace.edit("css-editor");
 	    cssEditor.setTheme("ace/theme/chrome");		        
 	    cssEditor.getSession().setTabSize(2);
-	    cssEditor.getSession().setMode("ace/mode/scss");
+	    cssEditor.getSession().setMode("ace/mode/scss");	    
 	}	
 	//
 	init();
