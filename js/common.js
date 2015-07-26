@@ -12,9 +12,18 @@ $(function() {
 		return false;
 	});
 
-	$(".e-generate-css, .e-generate-sass").click(function() {								
+	$(".e-generate-css, .e-generate-scss, .e-generate-sass").click(function() {								
 		$('.e-css-sass .btn').removeClass('active');
 		$(this).addClass('active');		
+
+		var cssEditor = ace.edit("css-editor");
+		if ($(this).hasClass('e-generate-css')) {
+			cssEditor.getSession().setMode("ace/mode/css");
+		} else if ($(this).hasClass('e-generate-scss')) {
+			cssEditor.getSession().setMode("ace/mode/scss");
+		} else if ($(this).hasClass('e-generate-sass')) {
+			cssEditor.getSession().setMode("ace/mode/sass");
+		}		
 
 		generateStyles();
 

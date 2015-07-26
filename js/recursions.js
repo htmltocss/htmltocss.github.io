@@ -27,7 +27,9 @@ function generateBaseStyles() {
 	var tableTag = 'table';
 	var tableSelector = '';				
 
-	var activeBtn = $('.e-css-sass .active');
+	var activeBtn = ($('.e-css-sass .active').hasClass('e-generate-scss') 
+		|| $('.e-css-sass .active').hasClass('e-generate-sass')) ? 'scss_sass' : 'css';	
+
 
 	// FORM, INPUTS present
 	var formIndex = $.inArray(formTag, tags);
@@ -40,13 +42,13 @@ function generateBaseStyles() {
 		// start form selector
 		formSelector = formTag + ' { \n\n';
 		// rules of open-closing brackets are different for css and scss
-		formSelector += activeBtn.hasClass('e-generate-sass') ? '' : '}\n\n';
+		formSelector += (activeBtn == 'scss_sass') ? '' : '}\n\n';
 		// go through all presented Input tags
 		for (var i=0; i<inputCurrentTags.length; i++) {
 			var inputIndex = $.inArray(inputCurrentTags[i], tags);
 			//if (inputIndex !== -1) {
 				tags.splice(inputIndex, 1);
-				if (activeBtn.hasClass('e-generate-sass')) {
+				if (activeBtn == 'scss_sass') {
 					formSelector += '\t' + inputCurrentTags[i] + ' { \n\n\t}';	
 					formSelector += (i == inputCurrentTags.length - 1) ? '\n' : '\n\n';
 				} else {
@@ -55,7 +57,7 @@ function generateBaseStyles() {
 				}					
 			//}					
 		}				
-		formSelector += activeBtn.hasClass('e-generate-sass') ? '}\n\n' : '\n';
+		formSelector += (activeBtn == 'scss_sass') ? '}\n\n' : '\n';
 	}
 	
 	// UL LI present
@@ -73,13 +75,13 @@ function generateBaseStyles() {
 		// common piece for css/scss
 		listSelector = listTag + ' { \n\n';
 		// rules of open-closing brackets are different for css and scss
-		listSelector += activeBtn.hasClass('e-generate-sass') ? '' : '}\n\n';			
-		if (activeBtn.hasClass('e-generate-sass')) {
+		listSelector += (activeBtn == 'scss_sass') ? '' : '}\n\n';			
+		if (activeBtn == 'scss_sass') {
 			listSelector += '\tli { \n\n\t}\n';	
 		} else {
 			listSelector += listTag + ' li { \n\n}\n\n';
 		}
-		listSelector += activeBtn.hasClass('e-generate-sass') ? '}\n\n' : '';
+		listSelector += (activeBtn == 'scss_sass') ? '}\n\n' : '';
 	}
 
 	// TABLE present
@@ -91,8 +93,8 @@ function generateBaseStyles() {
 		// common piece for css/scss
 		tableSelector = tableTag + ' { \n\n';
 		// rules of open-closing brackets are different for css and scss
-		tableSelector += activeBtn.hasClass('e-generate-sass') ? '' : '}\n\n';			
-		if (activeBtn.hasClass('e-generate-sass')) {
+		tableSelector += (activeBtn == 'scss_sass') ? '' : '}\n\n';			
+		if (activeBtn == 'scss_sass') {
 			tableSelector += '\ttr { \n\n';
 			tableSelector += '\t\tth { \n\n\t\t}\n\n';
 			tableSelector += '\t\ttd { \n\n\t\t}\n';
@@ -101,7 +103,7 @@ function generateBaseStyles() {
 			tableSelector += tableTag + ' tr { \n\n}\n\n';
 			tableSelector += tableTag + ' tr th, table tr td { \n\n}\n\n';
 		}
-		tableSelector += activeBtn.hasClass('e-generate-sass') ? '}\n\n' : '';
+		tableSelector += (activeBtn == 'scss_sass') ? '}\n\n' : '';
 	}
 	var stylesStr = '';
 	if (tags.length > 0) {
@@ -110,6 +112,15 @@ function generateBaseStyles() {
 	stylesStr += formSelector + listSelector + tableSelector;
 	// clean space defects
 	stylesStr = stylesStr.replace(/[\n]{3}/g,'\n\n');
+
+	if ($('.e-css-sass .active').hasClass('e-generate-sass')) {
+		stylesStr = stylesStr.replace(/[\s]{1}\{ \n/g,'\n');
+		//stylesStr = stylesStr.replace(/[\n\t]/g,'\n\n');
+		stylesStr = stylesStr.replace(/[\n\n]\}/g,'');
+		stylesStr = stylesStr.replace(/[\s]{3}\}/g,'');
+		stylesStr = stylesStr.replace(/[\s]\}\s/g,'');
+		//stylesStr = stylesStr.replace(/\n\n/g,'\n');
+	}		
 
 	cssEditor.session.setValue(stylesStr);
 
@@ -127,7 +138,7 @@ function generateFullStyles() {
 	var strHtml = htmlEditor.session.getValue();
 	var result = '';
 	var activeBtn = $('.e-css-sass .active');
-	if (activeBtn.hasClass('e-generate-sass')) {
+	if (activeBtn.hasClass('e-generate-scss') || activeBtn.hasClass('e-generate-sass')) {
 		//
 		result = sassRecurse($(strHtml));
 		result = result.trim();
@@ -353,24 +364,26 @@ function sassRecurse($item) {
 		    	}
 		    }
 
-		    //console.log(element.tagNameLowerCase());
-		    //console.log($('#excluded_tags').val());
-		    		    
-		    //if ($.inArray(element.tagNameLowerCase(), $('#excluded_tags').val()) !== -1) {
-	        //	return result += sassRecurse(element.children());
-	        //}
-	        
+			var activeBtn = $('.e-css-sass .active');
 
+			var openedCurlyBrace = '';
+			var closedCurlyBrace = '';
+			var closedSpaces = '';			
+			if (activeBtn.hasClass('e-generate-scss')) {
+				openedCurlyBrace = ' { \n';
+				closedCurlyBrace = '}';
+				closedSpaces = '\n';			
+			}
 
 	        // indent = tab space
 	        var indent = Array(parentsCount).join('\t');	        
 
 	        if (element.children().length > 0) {		    		        	
-        		result += '\n\n' + indent + sassEl + ' { \n' + sassRecurse(element.children()) + '\n' + indent + '}';		    	
+        		result += '\n\n' + indent + sassEl + openedCurlyBrace + sassRecurse(element.children()) + closedSpaces + indent + closedCurlyBrace;		    	
 		    } 
 		    // empty element = text - skip it
 		    else if (sassEl != '') {			    	
-		    	result += '\n\n' + indent  + sassEl + ' { \n\n' + indent + '}';
+		    	result += '\n\n' + indent  + sassEl + openedCurlyBrace + '\n' + indent + closedCurlyBrace;
 		    }
 	    }		    
     });  
